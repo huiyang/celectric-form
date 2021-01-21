@@ -1,14 +1,17 @@
+@extends('layouts.default')
+@section('content')
+<head>
+    <title>Multiple data send</title>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"> -->
 
-
-@extends('layout.head')
-
-
-<link rel="stylesheet" href="assets/css/form.css"/>
+  <link rel="stylesheet" href="assets/css/form.css"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script> -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 <link href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="Stylesheet"
         type="text/css" />
@@ -16,7 +19,223 @@
     <script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<script>
+    
+
+
+</script>
+</head>
+<body>
+<div class="form-container">
+    <div class="main-content-inner">
+    <!-- message alert -->
+    @if(Session::has('success'))
+        <div class="alert alert-success">
+        {{Session::get('success')}}
+        </div>
+    @endif
+
+ @if(count($errors)>0)
+    @foreach($errors->all() as $error)
+        <div class="alert alert-danger">{{$error}}</div>
+    @endforeach
+ @endif
+
+ 
+        <form action="form/orders" method="POST" id="prform">
+        {{ csrf_field() }}
+            <section>
+                <div class="panel panel-header">
+
+                <div class="form-group row">
+                <label for="sales_person" class="col-sm-4 col-form-label">Sales Person</label>
+                <div class="col-sm-8">
+               
+                <select class="form-control" id="sales_person"  name="sales_person" > 
+                    @if(Session::has('name'))
+                    <option value="{{Session::get('name')}}">{{Session::get('name')}}</option>
+                    @endif
+                    @foreach($sales_person as $salesP)
+                        <option value="{{$salesP['name']}}">{{$salesP['name']}}</option>
+                    @endforeach
+                    
+                </select>
+                
+                    
+                    <!-- <select name="sales_person" id="sales_person" class="form-control">
+                        
+                        <option value="Steve">Steve</option>
+                    </select> -->
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label for="custname" class="col-sm-4 col-form-label">Name</label>
+                    <div class="col-sm-8">
+                       <select name="cust_name" id="cust_name" class="form-control" required="required">
+                        <option > </option>
+                      @foreach($name as $custName)
+                      <option value="{{$custName['name']}}">{{$custName['name']}}</option>
+                      @endforeach
+                       </select>
+                     </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="term" class="col-sm-4 col-form-label">Term</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="term" name="term" placeholder="" required="required">
+                     </div>
+                          
+            </div>
+
+            <div class="form-group row">
+                <label for="ponum" class="col-sm-4 col-form-label">PO Number</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="po_number" name="po_number" placeholder="" required="required">
+                     </div>
+                          
+            </div>
+
+            <div class="form-group row">
+                <label for="prDate" class="col-sm-4 col-form-label">Date</label>
+                    <div class="col-sm-8">
+                        <input type="date" class="form-control datepick" id="pr_date" name="pr_date" placeholder="">
+                     </div>
+                          
+            </div>
+
+            <div class="form-group row">
+                <label for="qtnum" class="col-sm-4 col-form-label">Quotation Number</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="quotation_number" name="quotation_number" placeholder="" required="required">
+                     </div>
+                          
+            </div>
+
+            <div class="form-group row">
+                <label for="deliDate" class="col-sm-4 col-form-label">Expected Delivery</label>
+                    <div class="col-sm-8">
+                        <input type="date" class="form-control datepick" id="deliery_date" name="delivery_date" placeholder="Expected Delivery Date" required="required">
+                        <!-- <button class="btn btn-info">Submit</button> -->
+                     </div>
+                          
+            </div>
+            <!-- end of orders table -->
+            <hr class="hrbar">
+            <br>
+
+                    <div class="row">
+                        <!-- <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="text" name="customer_name" class="form-control" placeholder="Please enter your name">
+                    </div></div>
+                    <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="text" name="customer_address" class="form-control" placeholder="Please enter your Address">
+                    </div></div>
+
+                </div></div> -->
+                <div class="panel panel-footer" >
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                            <th>Item Description</th>
+                                <th>Model</th>
+                                <th>PO Quantity</th>
+                                <th>Order Quantity</th>
+                                <th>Selling Price (RM)</th>
+                                <th>Cost (RM)</th>
+                                <th>Total Price (RM)</th>
+                                <th>Total Cost (RM)</th>
+                                <th>Supplier</th>
+                                <th>Term</th>
+                                <th>Lead Time(Week)</th>
+                                <th><a href="#" class="addRow"><i class="material-icons" onclick="return false;">add</i></a></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            <tr>
+            
+            <td><input type="text" name="item_des[]" id="item_des" class="form-control" required="required"></td>
+
+            <td><input type="text" name="model[]" id="model" class="form-control" required="required"></td>
+
+            <td><input type="text" name="po_qty[]" id="po_qty" class="form-control" required="required"  onkeypress="return onlyNumberKey(event)"></td>
+
+            <td><input type="text" name="order_qty[]" id="order_qty" class="form-control" required="required"  onkeypress="return onlyNumberKey(event)"></td>
+
+            <td><input type="text" name="sell_price[]" id="sell_price" class="form-control decimal" required="required"></td>
+
+            <td><input type="text" name="cost[]" id="cost" class="form-control decimal" required="required"></td>
+
+            <td><input type="text" name="total_price[]" id="total_price" class="form-control"></td>
+
+            <td><input type="text" name="total_cost[]" id="total_cost" class="form-control"></td>
+            
+            <td><input type="text" name="supplier[]" id="supplier" class="form-control" required="required"></td>
+
+            <td><input type="text" name="term_2[]" id="term_2" class="form-control"></td>
+
+            <td><input type="text" name="leadtime[]" id="leadtime" class="form-control" required="required" ></td>
+
+            <td class="collapse"><input type="hidden" name="margin[]" id="margin"></td>
+
+            <td class="collapse"><input type="hidden" name="margin_percent[]" id="margin_percent"></td>
+
+            <td><a href="" onclick="return false;" class="deleteRow btn btn-danger" ><i class="material-icons">delete</i></a></td>
+
+            </tr>
+                            </tr>
+                        </tbody>
+                        <!-- <tfoot>
+                            <tr>
+                                <td type="hidden" style="border: none" ></td>
+                                <td style="border: none" class="collapse"></td>
+                                <td>Total</td>
+                                <td><b class="total"></b> </td>
+                                <td><input type="submit" name="" value="Submit" class="btn btn-success"></td>
+                            </tr>
+                        </tfoot> -->
+                    </table>
+                    <div class="row">
+                        <div class="col-lg-10"></div>
+                        <div class="col">
+                        <input type="submit" name="" id="submitbtn" value="Submit" class="btn btn-success">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+     </div>
+</div>
+
+
+
+<script type="text/javascript">
+//only number
+
+
+$(document).delegate('.decimal','keyup',function(){
+    var val = $(this).val();
+    if(isNaN(val)){
+         val = val.replace(/[^0-9\.]/g,'');
+         if(val.split('.').length>2) 
+             val =val.replace(/\.+$/,"");
+    }
+    $(this).val(val); 
+})
+
+function onlyNumberKey(evt) { 
+          
+          // Only ASCII charactar in that range allowed 
+          var ASCIICode = (evt.which) ? evt.which : evt.keyCode 
+          if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) 
+              return false; 
+          return true; 
+      }
+
+//date validation
 $(document).ready(function(){
     var dtToday = new Date();
     
@@ -33,220 +252,67 @@ $(document).ready(function(){
     var maxDate = year + '-' + month + '-' + day;
     
    // alert(maxDate);
-   $('#prDate').val(today);
-   var deli = $('#deliDate').val();
+   $('#pr_date').val(today);
+   var deli = $('#delivery_date').val();
   
     $('.datepick').attr('min', maxDate);
    
-   
-   
-    
-   
-    
-
-    // $('.datepick').datepicker({
-    //     minDate:0
-    // })   
-})
-   
-</script>
-
-
-@section('content') 
- <div class="form-container">
-<div class="main-content-inner">
-    <h2 align="center">Purchase Request</h2>
-    <!--form --> 
-    <br>
-    <div class="row">
-        <div class="col-lg-8">
-        <div class="row">
-        <div class="col">
-         <label for="salesperson" class=" label">Sales Person : </label>
-        <span name="salesperson" id="salesperson" align="left" class="">&emsp;Steve</span>
-        </div>
-        </div>
-       
-         <form action="" class="customer-form">
-   
-            <div class="form-group row">
-                <label for="custname" class="col-sm-4 col-form-label">Name</label>
-                    <div class="col-sm-8">
-                       <select name="custname" id="" class="form-control">
-                       <option >--Select Customer-- </option>
-                       @foreach($name as $custname)
-     <option value="{{ $custname->name}}">{{ $custname->name }}</option>
-     @endforeach
-                       </select>
-                     </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="term" class="col-sm-4 col-form-label">Term</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="term" name="term" placeholder="">
-                     </div>
-                          
-            </div>
-
-            <div class="form-group row">
-                <label for="ponum" class="col-sm-4 col-form-label">PO Number</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="ponum" name="ponum" placeholder="">
-                     </div>
-                          
-            </div>
-
-            <div class="form-group row">
-                <label for="prDate" class="col-sm-4 col-form-label">Date</label>
-                    <div class="col-sm-8">
-                        <input type="date" class="form-control datepick" id="prDate" name="prDate" placeholder="">
-                     </div>
-                          
-            </div>
-
-            <div class="form-group row">
-                <label for="qtnum" class="col-sm-4 col-form-label">Quotation Number</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="qtnum" name="qtnum" placeholder="">
-                     </div>
-                          
-            </div>
-
-            <div class="form-group row">
-                <label for="deliDate" class="col-sm-4 col-form-label">Expected Delivery</label>
-                    <div class="col-sm-8">
-                        <input type="date" class="form-control datepick" id="deliDate" name="deliDate" placeholder="Expected Delivery Date">
-                        <!-- <button class="btn btn-info">Submit</button> -->
-                     </div>
-                          
-            </div>
-
-
-
-            </form>
-        </div>
-      <div class="col-lg-4">
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-        <button class="btn btn-info" id="submit">Submit</button>&ensp;
-        <button class="btn btn-danger" id="clear">Clear</button>
-      </div>
-
-    </div>
-<hr class="hrbar">
-<br>
- <!--table form-->
-
-     <form>
-         <section>
-             <div class="panel panel-header">
-
-            </div>
-             <div class="panel panel-footer" >
-                 <table class="table table-bordered">
-                     <thead>
-                         <tr>
-                             <th>Item Description</th>
-                             <th>Model</th>
-                             <th>PO Quantity</th>
-                             <th>Order Quantity</th>
-                             <th>Selling Price (RM)</th>
-                             <th>Cost (RM)</th>
-                             <th>Total Price (RM)</th>
-                             <th>Total Cost (RM)</th>
-                             <th>Supplier</th>
-                             <th>Term</th>
-                             <th>Lead Time(Week)</th>
-                             <th><a href="" onclick="return false;" class="addRow"><i class="material-icons" id="addRow">add</i></a></th>
-                         </tr>
-                     </thead>
-                     <tbody>
-                     
-         <tr>
-         
-         <td><input type="text" name="itemDes" id="itemDes" class="form-control"></td>
-
-         <td><input type="text" name="model" id="model" class="form-control"></td>
-
-         <td><input type="text" name="POqty" id="POqty" class="form-control"></td>
-
-         <td><input type="text" name="ordqty" id="ordqty" class="form-control"></td>
-
-         <td><input type="text" name="sellprc" id="sellprc" class="form-control"></td>
-
-         <td><input type="text" name="cost" id="cost" class="form-control"></td>
-
-         <td><input type="text" name="totalprc" id="totalprc" class="form-control"></td>
-
-         <td><input type="text" name="totalcst" id="totalcst" class="form-control"></td>
-         
-         <td><input type="text" name="supplier" id="supplier" class="form-control"></td>
-
-         <td><input type="text" name="termInput" id="term" class="form-control"></td>
-
-         <td><input type="text" name="week" id="week" class="form-control" ></td>
-
-
-
-         <td><a href="" onclick="return false;" class="deleteRow btn btn-danger" ><i class="material-icons">delete</i></a></td>
-         </tr>
-                        
-                     </tbody>
-                    <!--
-                     <tfoot>
-                         <tr>
-                             <td style="border: none"></td>
-                             <td style="border: none"></td>
-                             <td style="border: none"></td>
-                             <td style="border: none"></td>
-                             <td style="border: none"></td>
-
-                             <td>Total</td>
-                             <td><b class="gtp"></b> </td>
-                             <td style="border: none" class="gtc"></td>
-                             <td><input type="submit" name="" value="Submit" class="btn btn-success"></td>
-                         </tr>
-                     </tfoot>-->
-                 </table>
-             </div>
-         </section>
-     </form>
-
-    
-</div>
-</div>
-
-
-<script>
-$(document).ready(function(){
-    $("#totalprc,#totalcst").attr("disabled", true);
-})
-    //add row function
+});
+//
+    $('tbody').delegate('.quantity,.budget','keyup',function(){
+        var tr=$(this).parent().parent();
+        var quantity=tr.find('.quantity').val();
+        var budget=tr.find('.budget').val();
+        var amount=(quantity*budget);
+        tr.find('.amount').val(amount);
+        total();
+    });
+    function total(){
+        var total=0;
+        $('.amount').each(function(i,e){
+            var amount=$(this).val()-0;
+        total +=amount;
+    });
+    $('.total').html(total+".00 tk");   
+    }
     $('.addRow').on('click',function(){
         addRow();
     });
+    function addRow()
+    {
+    
+        var newRow = '<tr>+ <td><input type="text" name="item_des[]" id="item_des" class="form-control" required="required"></td>'+
 
-    function addRow(){
-        var newRow ='<tr>'+
-        '<td><input type="text" name="itemDes" id="itemDes" class="form-control"></td>'+
-        '<td><input type="text" name="model" id="model" class="form-control"></td>'+
-        '<td><input type="text" name="POqty" id="POqty" class="form-control"></td>'+
-        '<td><input type="text" name="ordqty" id="ordqty" class="form-control"></td>'+
-        '<td><input type="text" name="sellprc" id="sellprc" class="form-control"></td>'+
-        '<td><input type="text" name="cost" id="cost" class="form-control"></td>'+
-        '<td><input type="text" name="totalprc" id="totalprc" disabled="true" class="form-control"></td>'+
-        '<td><input type="text" name="totalcst" id="totalcst" disabled = "true" class="form-control"></td>'+
-        '<td><input type="text" name="supplier" id="supplier" class="form-control"></td>'+
-        '<td><input type="text" name="term" id="term" class="form-control"></td><td><input type="text" name="week" id="week" class="form-control" required=""></td>'+
-        '<td><a href="" onclick="return false;" class=" btn btn-danger deleteRow"><i class="material-icons">delete</i></a></td>'+'</tr>';
+'<td><input type="text" name="model[]" id="model" class="form-control" required="required"></td>'+
 
+'<td><input type="text" name="po_qty[]" id="po_qty" class="form-control" required="required"  onkeypress="return onlyNumberKey(event)"></td>'+
+
+'<td><input type="text" name="order_qty[]" id="order_qty" class="form-control" required="required"  onkeypress="return onlyNumberKey(event)"></td>'+
+
+'<td><input type="text" name="sell_price[]" id="sell_price" class="form-control decimal" ></td>'+
+
+'<td><input type="text" name="cost[]" id="cost" class="form-control decimal"></td>'+
+
+'<td><input type="text" name="total_price[]" id="total_price" class="form-control"></td>'+
+
+'<td><input type="text" name="total_cost[]" id="total_cost" class="form-control"></td>'+
+
+'<td><input type="text" name="supplier[]" id="supplier" class="form-control"></td>'+
+
+'<td><input type="text" name="term_2[]" id="term_2" class="form-control"></td>'+
+
+'<td><input type="text" name="leadtime[]" id="leadtime" class="form-control" ></td>'+
+
+'<td class="collapse"><input type="hidden" name="margin[]" id="margin"></td>'+
+
+'<td class="collapse"><input type="hidden" name="margin_percent[]" id="margin_percent"></td>'+
+
+'<td><a href="" onclick="return false;" class="deleteRow btn btn-danger" ><i class="material-icons">delete</i></a></td>'+
+        
+        '</tr>';
         $('tbody').append(newRow);
-        //$("#totalprc,#totalcst").attr("disabled", true);
-
-    }
-    //
-
-    // deleteRow
+    };
+    //delete row
     $('.table tbody').on('click','.deleteRow',function(){
         var length=$('tbody tr').length;
         if(length==1){
@@ -257,44 +323,46 @@ $(document).ready(function(){
        
     });
 
-    //calculate total for same row
-    $('tbody').delegate('#POqty,#sellprc,#ordqty,#cost','keyup',function(){
+    //calculate total for each row
+    $('tbody').delegate('#po_qty,#sell_price,#order_qty,#cost','keyup',function(){
         var tr = $(this).parent().parent();
-        var poqty = tr.find('#POqty').val();
-        var sellprc = tr.find('#sellprc').val();
-        var ordqty = tr.find('#ordqty').val();
+        var poqty = tr.find('#po_qty').val();
+        var sellprc = tr.find('#sell_price').val();
+        var ordqty = tr.find('#order_qty').val();
         var cost = tr.find('#cost').val();
+        //calculation
         var totalcost = (ordqty*cost);
-        var totalprc = (poqty*sellprc);
-        tr.find('#totalcst').val(totalcost);
-        tr.find('#totalprc').val(totalprc);
+        var totalprc = (poqty*sellprc).toFixed(2);
+        var margin = (totalprc-totalcost);
+        var marginCal = margin/totalprc;
+        var marginPercent = marginCal.toFixed(2);
+//set value
+        tr.find('#total_cost').val(totalcost);
+        tr.find('#total_price').val(totalprc);
+        tr.find('#margin').val(margin);
+        tr.find('#margin_percent').val(marginPercent);
         //total();
     });
-    
-  
-    // function total(){
-    //     calTotalCost();
-    //     calTotalPrice();
-    // }
-    // function calTotalCost(){
-    //   var totalcost=0;
-    //     $('#totalcst').each(function(i,e){
-    //         var amountcst = $(this).val()-0;
-    //         totalcost+=amountcst;
 
-    //     });
-    //     $('.gtc').html(totalcost);
-    // }
+    //
 
-    // function calTotalPrice(){
-    //     var totalprice = 0;
-    //     $('#totalprc').each(function(i,e){
-    //         var amount = $(this).val()-0;
-    //         totalprice += amount;
-    //     });
-    //     $('.gtp').html(totalprice);
-    // }
-  
+    //confirm before submit
+  /* $(function(){
+       $('#submitbtn').click(function(){
+           if(!$('#cust_name').val()==""){
+               if(confirm("Confirm submit form ?")){
+                   
+               // $('form#prform').submit();
+               }
+              
+           }else{
+               alert("Please Select a customer");
+           }
+       })
+   })*/
+
+    //
+
 </script>
-
+</body>
 @endsection

@@ -15,31 +15,16 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('salesperson');
-            $table->string('name');
+            $table->string('sales_person');
+            $table->string('cust_name');
             $table->string('term');
-            $table->string('POnumber');
-            $table->date('PRDate');
-            $table->string('quatationNum');
-            $table->date('deliveryDate');
-            $table->string('itemDes');
-            $table->string('model');
-            $table->integer('poQty');
-            $table->integer('orderQty');
-            $table->double('sellprc');
-            $table->double('cost');
-            $table->double('totalprc');
-            $table->double('totalcst');
-            $table->string('supplier');
-            $table->string('term2');
-            $table->string('leadtime');
-            $table->double('totalmargin');
-            $table->double('margin');
-            $table->string('invoiceNum');
-            $table->string('deliveryStat');
-            $table->string('remark');
-            
+            $table->string('po_number');
+            $table->date('pr_date');
+            $table->string('quotation_number');
+            $table->date('delivery_date');
+           
             $table->timestamps();
+            
         });
     }
 

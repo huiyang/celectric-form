@@ -1,6 +1,6 @@
 .customer-form{
    
-    width:350px;
+    width:500px;
 
 }
 
@@ -19,6 +19,14 @@
 }
 
 .form-group{
+    width:500px;
+    
+}
+.modalText{
     width:300px;
 }
+
+
+
+
 

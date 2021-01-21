@@ -1,5 +1,5 @@
 
-@extends('layout.head')
+@extends('layouts.default')
 @section('content')
 
 <link rel="stylesheet" href="assets/css/form.css"/>
@@ -43,13 +43,14 @@
         <div class="row">
             <div class="col-2"></div>
             <div class="col">
-                <div class=" table wrapper" align="center">
+                <div class="wrapper" align="center">
                     <table id="cust_table" class="table table-bordered" style="width:100%" align="center">
                         <thead>
                             <tr align="center">
                                 <th width="60%">Name</th>
                                 <th width="40%">Action</th>
                             </tr>
+                       
                         
                         </thead>
                     
@@ -81,8 +82,8 @@
                     {{csrf_field()}}
                     <span id="form_output"></span>
                     <div class="form-group">
-                        <label>Enter Name</label>
-                        <input type="text" name="custname" id="custname" class="form-control" />
+                        <label for="custname">Enter Name</label>
+                        <input type="text" name="custname" id="custname" class="form-control" style="width:300px;" align="left"/>
                     </div>
                    
                 </div>
@@ -103,7 +104,7 @@ $(document).ready(function(){
     // auto reload datatables every 10secs
         setInterval(function(){
             $('#cust_table').DataTable().ajax.reload();
-        },8000);
+        },1000);
 
     //
 
