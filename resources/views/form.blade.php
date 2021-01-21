@@ -331,7 +331,7 @@ $(document).ready(function(){
         var ordqty = tr.find('#order_qty').val();
         var cost = tr.find('#cost').val();
         //calculation
-        var totalcost = (ordqty*cost);
+        var totalcost = (ordqty*cost).toFixed(2);
         var totalprc = (poqty*sellprc).toFixed(2);
         var margin = (totalprc-totalcost);
         var marginCal = margin/totalprc;
