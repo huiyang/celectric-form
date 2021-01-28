@@ -18,7 +18,6 @@
                     <div class="col-12 mt-5">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="header-title">Data Table Default</h4>
                                 <div class="data-tables">
 
            <table class="order_table table table-bordered">

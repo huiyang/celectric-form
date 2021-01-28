@@ -41,7 +41,7 @@ Route::get('logout',function(){
 
 //ordered_items.blade
 Route::get('/order/items/{id}','OrderDetailsController@getItems')->name('viewItems');
-Route::POST('items/edit','OrderDetailsController@editItems')->name('item.edit');
+Route::post('items/edit','OrderDetailsController@editItems')->name('item.edit');
 Route::get('item/delete','OrderDetailsController@deleteItem')->name('item.delete');
 Route::get('items/getItemById','OrderDetailsController@findItemByID')->name('item.findItem');
 Route::get('items/{id}','OrderDetailsController@getItems');
