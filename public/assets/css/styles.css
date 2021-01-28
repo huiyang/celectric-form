@@ -55,7 +55,8 @@
 /*------------------------- 1. Core Css -------------------*/
 .dataTables_wrapper {
     margin: 10px auto;
-    width: 50%;
+    width: 100%;
+    white-space:nowrap;
   }
 
 .well{
@@ -2204,6 +2205,7 @@ table tr td [class^="ti-"] {
 
 
 /*-------------------- 20. Datatable ------------------- */
+
 
 div.dataTables_wrapper div.dataTables_length select {
     width: 100px;

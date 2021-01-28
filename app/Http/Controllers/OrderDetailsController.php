@@ -11,26 +11,34 @@ use App\Models\Customer;
 
 class OrderDetailsController extends Controller
 {
+
+    // public function __construct(){
+    //     $this->middleware('auth');
+    // }
+//        public function __construct()
+//    {
+//        $this->middleware('auth');
+//    }
     public function getOrder(Request $request){
-        if(!session()->has('name')){
-            return redirect('/');
-        }else{
+           
             $customer = Customer::select('name')->get();
             $sales_person_name =$request->session()->get('name');
             $orders = Orders::where('sales_person',$sales_person_name)->orderBy('created_at','desc')->get();
             return view('order',compact('orders','customer'));
              
-        } 
+        
     }
 
     public function getItems($id){
-       if(!session()->has('name')){
-             return redirect('/');
-        }else{
+    
             $order = Orders::where('id',$id)->get();
             $items = Items::where('order_id',$id)->get();
-            return view('ordered_items',compact('items','order'));
-        }
+            return view('itemDetails',compact('items','order'));
+       
+            //return view('ordered_items',compact('items','order'));
+
+         
+        
         
     }
 
@@ -54,7 +62,10 @@ class OrderDetailsController extends Controller
            $items->invoice_no = $request->invoice_no;
            $items->delivery_stat = $request->delivery_stat;
            $items->remark = $request->remark;
-           $items->save();
+           
+            //    return redirect('itemDetails')->with('edited','Item Details Updated');
+           
+          $items->save();
            $msg =  '<div class="alert alert-success">Data Updated</div>';
            $result = array(
                'success' =>$msg,

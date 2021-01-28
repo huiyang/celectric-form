@@ -1,48 +1,55 @@
 @extends('layouts.default')
 @section('content')
-<link rel="stylesheet" href="assets/css/form.css"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>       
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<style>
- 
-</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+ <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script> 
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+
+<link rel="stylesheet" href="{{asset('assets/css/form.css')}}"/>
+<link rel="stylesheet" href="{{asset('assets/css/default-css.css')}}">
+
+ <!-- Start datatable js -->
+ <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+
+      <!-- Start datatable css -->
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.jqueryui.min.css"> 
 
 <div class="form-container">
 
     <div class="main-content-inner">
-        
-        <div class="row">
-            <div class="col-12">
-                <div class="msg"></div>
-                <h4 align="center">Purchase Request History</h4>
-                <br>
-                <br>
-                <div class="wrapper">
-                <table class="table table-bordered order_table"  id="order_table">
-                    <thead>
-                        <tr>
-                            <th>No.</th>
+        <h4 align="center">Purchase Request History</h4>
+       <div class="row">
+           <table class="order_table table table-bordered">
+                <thead>
+                    <tr>
+                             <th>No.</th>
                             <th>Customer</th>
                             <th>Term</th>
                             <th>PO Number</th>
                             <th>Date</th>
                             <th>Quotation</th> 
                             <th>Actual Delivery</th>
-                            <th> More Actions </th>
-
-                           
-                        </tr>
-                    
-                    </thead>
-                    <tbody>
-                    @if(count($orders)>0)
+                            <th> Actions </th>
+                    </tr>
+                </thead>
+                <tbody>
+                     @if(count($orders)>0)
                     @foreach($orders as $key=>$data)
-                        <tr>
-                            <td>{{++$key}}</td>
+                    <tr>
+                          <td>{{++$key}}</td>
                             <td>{{$data->cust_name}}</td>
                             <td>{{$data->term}}</td>
                             <td>{{$data->po_number}}</td> 
@@ -50,45 +57,41 @@
                             <td>{{$data->quotation_number}}</td>
                             <td>{{$data->delivery_date}}</td>
                             <td>
-                                <div class="btn-group">
-                                    <a href="/order/items/{{$data->id}}" target="_blank" class="btn btn-primary">View</a>
+                               <div class="btn-group dropdown ">
+                                    <!-- <a href="/order/items/{{$data->id}}" target="_blank" class="btn btn-primary">View</a> -->
+                                     <a href="{{route('viewItems',$data->id)}}" target="_blank" class="btn btn-primary">View</a>
+
+                                
                                     
                                 
                                     <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
+                                    </button> 
                                     <div class="dropdown-menu">
+                                   
+                                         
+                                         <div class="dropdown-divider"></div> 
+                                         <a class="dropdown-item editbtn" href="#" onclick="return false;" id="{{$data->id}}" data-toggle="modal" data-target="#editOrder_modal">Edit</a>
+                                        
+                                        <a class="dropdown-item deletebtn" href="#" id="{{$data->id}}" onclick="return false;">Delete</a> 
 
                                         
-                                         <!-- <div class="dropdown-divider"></div> -->
-                                        <a class="dropdown-item editbtn" href="#" onclick="return false;" id="{{$data->id}}" >Edit</a>
-                                        
-                                        <a class="dropdown-item deletebtn" href="#" id="{{$data->id}}" onclick="return false;">Delete</a>
                                        
                                        
-                                    </div>
+                                     </div>
                                 </div>
                             </td>
                         </tr>
                     @endforeach
-                    @else 
-                        <tr>
-                        <td colspan="8"><p align="center">No order details available</p></td>
-                        </tr>
                     @endif
-                    </tbody>
-                    <tfoot>
-
-                 
-                    </tfoot>
-                </table></div>
-            </div>
-        </div>
+                </tbody>
+           </table>
+       </div>
 
         
 <!----Modal-----> 
  <!---Edit Modal-->
- <div id="editOrder_modal" class="modal fade" role="dialog">
+ <div id="editOrder_modal" class="modal  fade" role="dialog">
  <div class="modal-dialog">
   <div class="modal-content">
    <div class="modal-header">
@@ -100,51 +103,82 @@
          <form method="POST" action="{{url('order/edit')}}" id="editOrder_form" class="form-horizontal" enctype="multipart/form-data">
           @csrf
           <div class="form-group row">
-            <label class="control-label col-md-4" >Customer</label>
-            <div class="col-md-8">
-             <!-- <input type="text" name="customer" id="customer" class="form-control" readonly /> -->
-             <select name="customer"  class="form-control form-control-lg">
-            <option value="" id="customer"></option>
-            <option value="">---------------</option>
-            @foreach($customer as $cust)
-            <option value="{{$cust['name']}}">{{$cust['name']}}</option>
-            @endforeach
-             </select>
-            </div>
+              <div class="col-sm-3">   
+                   <label >Customer</label></div>
+        
+            <div class="col">
+
+           
+                  <select name="customer"  class="form-control form-control">
+                <option value="" id="customer"></option>
+                <option value="">---------------</option>
+                @foreach($customer as $cust)
+                <option value="{{$cust['name']}}">{{$cust['name']}}</option>
+                @endforeach
+                </select>
+         
+               </div>
+            
            </div>
 
-          <div class="form-group">
-            <label class="control-label col-md-4" >Term</label>
-            <div class="col-md-8">
-             <input type="text" name="term" id="term" class="form-control" />
+          <div class="form-group row">
+              <div class="col-sm-3">            
+                  <label for="term">Term</label>
             </div>
+            <div class="col">
+                <input type="text" name="term" id="term" class="form-control" />
+            </div>
+            
+             
+            
            </div>
 
-           <div class="form-group">
-            <label class="control-label col-md-4" >PO Number</label>
-            <div class="col-md-8">
-             <input type="text" name="po_number" id="po_number" class="form-control" />
+           <div class="form-group row">
+               <div class="col-sm-3">
+                   <label>PO Number</label>
+               </div>
+            
+            <div class="col">
+                <input type="text" name="po_number" id="po_number" class="form-control" />
             </div>
+             
+            
            </div>
-           <div class="form-group">
-            <label class="control-label col-md-4" >Date</label>
-            <div class="col-md-8">
-             <input type="date" name="pr_date" id="date" class="form-control" />
-            </div>
+           <div class="form-group row">
+               <div class="col-sm-3">
+                      <label  >Date</label>
+            
+               </div>
+               <div class="col">
+                     <input type="date" name="pr_date" id="date" class="form-control" />
+               </div>
+         
+           
+        
            </div>
 
-           <div class="form-group">
-            <label class="control-label col-md-4" >Quotation</label>
-            <div class="col-md-8">
-             <input type="text" name="quotation_number" id="quotation_number" class="form-control" />
+           <div class="form-group row">
+               <div class="col-sm-3">
+                    <label >Quotation</label>
+               </div>
+           
+            <div class="col">
+                   <input type="text" name="quotation_number" id="quotation_number" class="form-control" />
             </div>
+          
+            
            </div>
 
-           <div class="form-group">
-            <label class="control-label col-md-4" >Actual Delivery</label>
-            <div class="col-md-8">
-             <input type="date" name="delivery_date" id="delivery_date" class="form-control" />
+           <div class="form-group row">
+               <div class="col-sm-3">
+                   <label >Actual Delivery</label>
+               </div>
+            <div class="col">
+                   <input type="date" name="delivery_date" id="delivery_date" class="form-control" />
+          
             </div>
+          
+          
            </div>
 
 
@@ -178,12 +212,9 @@
 
     $(document).ready(function(){
         $('.order_table').DataTable({
-            "autoWidth": false, 
-            columnDefs: [
-           
-            { width: 300, targets:7 }
-        ],
-            "dom": '<"wrapper"flipt>'
+            "bAutoWidth": false,
+            "dom":'<"wrapper"flipt>',
+        
 
         });
 
@@ -208,7 +239,7 @@
                     $('#quotation_number').val(data.quotation_number);
                     $('#delivery_date').val(data.delivery_date);
                     $('#order_id').val(data.id);
-                    $('#editOrder_modal').modal('show');
+                    $('#editOrder_modal.modal').modal('show');
                     
                     
                 }
@@ -235,8 +266,8 @@
                          $('#form_result').html(data.success);
                        
                        
-                        $('#editOrder_form')[0].reset();
-                         $('#editOrder_modal').modal('hide');
+                        //$('#editOrder_form')[0].reset();
+                         //$('#editOrder_modal.modal').modal('hide');
                         
                        setTimeout(() => {
                            window.location.reload();

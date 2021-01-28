@@ -8,30 +8,43 @@ use DataTables;
 
 class CustomerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     
     public function getData(Request $request){
-        if(session()->has('name')){
+       
         $addby = $request->session()->get('name');
         $customer = Customer::select('id','name')->get();
         return DataTables::of($customer)
         ->addColumn('action',function($customers){
-             return '<a href="#" class="btn btn-xs btn-primary edit" id="'.$customers->id.'"><i class ="glyphicon glyphicon-edit"></i>Edit</a>&emsp;<a href="#" class="btn btn-xs btn-danger delete" id="'.$customers->id.'"><i class ="glyphicon glyphicon-remove"></i>Delete</a>';
+             return '
+             <a href="#" class="btn btn-xs btn-primary edit" id="'.$customers->id.'"><i class ="glyphicon glyphicon-edit"></i>Edit</a>&emsp;<a href="#" class="btn btn-xs btn-danger delete" id="'.$customers->id.'"><i class ="glyphicon glyphicon-remove"></i>Delete</a>';
+        //     return '
+        //     <div class="btn-group dropdown">
+        //     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Action
+        //     <ul class="dropdown-menu">
+        //         <li><a href="#" class="dropdown-item edit" id="'.$customers->id.'" data-toggle="modal" data-target="#editOrder_modal">Edit</a></li>
+        //          <li><a href="#" class="dropdown-item delete" id="'.$customers->id.'">Delete</a></li> 
+             
+        //     </ul>
+        // </div>';
+      
+            
         })
         ->make(true);
-    }
+     
     }
     public function index(){
-       // getData();
-       if(!session()->has('name')){
-           return redirect('/');
-       }
+     
         return view('customer');
     }
 
     public function postdata(Request $request){
       
         $validation = Validator::make($request->all(),[
-            'custname'=>'required|unique:customers,name',
+            'custname'=>'required',
 
             // input [name] = required|unique:[tablename,column name]
         ]);

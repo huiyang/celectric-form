@@ -13,25 +13,35 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class PurchaseRequestController extends Controller
-{
+{   
+    
+    // public function __construct(){
+    //     $this->middleware('auth');
+    // }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
+     
     public function index()
     {
        
-        if(!session()->has('name')){
-            return redirect('/');
-        }else{
-            $user = session()->get('name');
-            $sales_person = User::whereNotIn('name',[$user])->get('name');
+            $user = Auth::user();
+            Session::put('name', $user->name);
+            $user_name = session()->get('name');
+            $sales_person = User::whereNotIn('name',[$user_name])->get('name');
              $name = Customer::get('name')->toArray();
              return view('form',['name'=>$name],['sales_person'=>$sales_person]);
              
              
-        } 
+        
        
     }
 
@@ -110,47 +120,7 @@ class PurchaseRequestController extends Controller
         return redirect('/form');
 
       
-                        // 'order_id'  => $order_id,
-                        // 'item_des' => $request->item_des[$item],
-                        // 'model'    => $request->model[$item],
-                        // 'po_qty'   => $request->po_qty[$item],
-                        // 'order_qty' => $request->order_qty[$item],
-                        // 'sell_price'     =>$request->sell_price[$item],
-                        // 'cost'          =>$request->cost[$item],
-                        // 'total_price'    =>$request->total_price[$item],
-                        // 'total_cost'    =>$request->total_cost[$item],
-                        // 'supplier'       =>$request->supplier[$item],
-                        // 'term_2'         =>$request->term_2[$item],
-                        // 'leadtime'       =>$request->leadtime[$item],
-                        // 'margin'       =>$request->margin[$item],
-                        // 'margin_percent'      =>$request->margin_percent[$item],
-                        // 'invoice_no'        =>'',
-                        // 'delivery_stat'     =>'',
-                        // 'remark'            =>'',
-                        // 'created_at' => now(),
-                        // 'updated_at' => now(),
-
-                        //model
-                        // $items->order_id = $order_id,
-                        // $items->item_des = $request->item_des[$item],
-                        // $items->model = $request->model[$item],
-                        // $items->po_qty = $request->po_qty[$item],
-                        // $items->order_qty = $request->order_qty[$item],
-                        // $items->sell_price = $request->sell_price[$item],
-                        // $items->cost = $request->cost[$item],
-                        // $items->total_price = $request->total_price[$item],
-                        // $items->total_cost = $request->total_cost[$item],
-                        // $items->supplier = $request->supplier[$item],
-                        // $items->term_2 = $request->term_2[$item],
-                        // $items->leadtime = $request->leadtime[$item],
-                        // $items->margin = $request->margin[$item],
-                        // $items->margin_percent = $request->margin_percent[$item],
-                        // $items->remark = '',
-                        // $items->invoice_no = '',
-                        // $items->delivery_stat = '',
-                        // now(),
-                        // now(),
-                        //model
+                       
            
         }
     /**

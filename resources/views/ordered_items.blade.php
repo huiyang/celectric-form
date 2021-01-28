@@ -1,4 +1,5 @@
-<html>
+@extends('layouts.front')
+@section('content')
 <title>Item Details</title>
 <!-- Yajra table -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
@@ -14,25 +15,7 @@
 
 
 
-    <style>
-.ordertable, th, td {
-  border: 3px solid black;
-  border-collapse: collapse;
-  
-}
-th, td {
-  padding: 2px;
-  text-align: left;   
-}
-
-th{
-    width:40%;
-}
-td{
-    width:60%;
-}
-</style>
-
+ 
 <div id="preloader">
         <div class="loader"></div>
     </div>
@@ -297,10 +280,10 @@ td{
 <script>
    
     $(document).ready(function(){
-        // $('#itemsTable').DataTable({
-        //     "dom": '<"top"i>rt<"bottom"flp><"clear">',
-        //     "scrollX":true,
-        //  });
+         $('#itemsTable').DataTable({
+            "dom": '<"top"i>rt<"bottom"flp><"clear">',
+             "scrollX":true,
+     });
              $(document).on('click','.editbtn',function(){
            
                 var id = $(this).attr('id');
@@ -432,7 +415,7 @@ td{
           return true; 
       }
 </script>
-</html>
+@endsection
 
 
 
