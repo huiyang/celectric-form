@@ -1,30 +1,12 @@
 @extends('layouts.default')
+
+@section('title', 'New Purchase Request')
+
 @section('content')
-<head>
- 
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"> -->
 
-  <link rel="stylesheet" href="assets/css/form.css"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  {{-- <link rel="stylesheet" href="assets/css/form.css"/> --}}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script> -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-<link href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="Stylesheet"
-        type="text/css" />
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-  
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    
-
-
-</script>
-</head>
-<body>
 <div class="form-container">
     <div class="main-content-inner">
     <!-- message alert -->
@@ -40,11 +22,19 @@
     @endforeach
  @endif
 
+<div class="row">
+
+                    <div class="col-12 mt-5">
+                        <div class="card">
+                            <div class="card-body">
  
         <form action="form/orders" method="POST" id="prform">
         {{ csrf_field() }}
             <section>
-                <div class="panel panel-header">
+                <div>
+
+                <div class="row">
+                <div class="col-lg-6 col-12">
 
                 <div class="form-group row">
                 <label for="sales_person" class="col-sm-4 col-form-label">Sales Person</label>
@@ -121,6 +111,8 @@
                      </div>
                           
             </div>
+            </div>
+            </div>
             <!-- end of orders table -->
             <hr class="hrbar">
             <br>
@@ -151,7 +143,7 @@
                                 <th>Supplier</th>
                                 <th>Term</th>
                                 <th>Lead Time(Week)</th>
-                                <th><a href="#" class="addRow"><i class="material-icons" onclick="return false;">add</i></a></th>
+                                <th><a href="#" class="addRow"><i class="fa fa-plus" onclick="return false;"></i></a></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -183,7 +175,7 @@
 
             <td class="collapse"><input type="hidden" name="margin_percent[]" id="margin_percent"></td>
 
-            <td><a href="" onclick="return false;" class="deleteRow btn btn-danger" ><i class="material-icons">delete</i></a></td>
+            <td><a href="" onclick="return false;" class="deleteRow btn btn-danger" ><i class="fa fa-remove"></i></a></td>
 
             </tr>
                             </tr>
@@ -199,15 +191,18 @@
                         </tfoot> -->
                     </table>
                     <div class="row">
-                        <div class="col-lg-10"></div>
-                        <div class="col">
-                        <input type="submit" name="" id="submitbtn" value="Submit" class="btn btn-success">
+                        <div class="col-lg-12">
+                            <input type="submit" name="" id="submitbtn" value="Submit" class="float-right btn btn-primary">
                         </div>
                     </div>
+                </div>
+                </div>
                 </div>
             </section>
         </form>
      </div>
+</div>
+</div>
 </div>
 
 
@@ -307,7 +302,7 @@ $(document).ready(function(){
 
 '<td class="collapse"><input type="hidden" name="margin_percent[]" id="margin_percent"></td>'+
 
-'<td><a href="" onclick="return false;" class="deleteRow btn btn-danger" ><i class="material-icons">delete</i></a></td>'+
+'<td><a href="" onclick="return false;" class="deleteRow btn btn-danger" ><i class="fa fa-remove"></i></a></td>'+
         
         '</tr>';
         $('tbody').append(newRow);
@@ -364,5 +359,4 @@ $(document).ready(function(){
     //
 
 </script>
-</body>
 @endsection

@@ -1,32 +1,12 @@
 @extends('layouts.default')
 
+@section('title', 'Order #'.$order->id)
+
 @section('content')
+    <link rel="stylesheet" href="{{asset('assets/css/form.css')}}"/>
+    <link rel="stylesheet" href="{{asset('assets/css/default-css.css')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
- <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script> 
-
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
-
-<link rel="stylesheet" href="{{asset('assets/css/form.css')}}"/>
-<link rel="stylesheet" href="{{asset('assets/css/default-css.css')}}">
-
- <!-- Start datatable js -->
- <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
-
-      <!-- Start datatable css -->
-      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.jqueryui.min.css"> 
     <style>
         table{
             white-space:nowrap;
@@ -35,45 +15,52 @@
     </style>
 
 
-<div class="container-fluid">
-    <div class="main-content-inner"> 
-        <h4 style="font-weight: bold">Reference</h4>
-        <div class="row">
+<div class="row">
+
+                    <div class="col-12 mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="header-title">Reference</h4>
+        
        
-                    <br>
+                    <div class="row">
+                    <div class="col-12 col-lg-6">
                     <table class="ordertable table table-bordered table-hovered">
-                    @foreach($order as $key=>$orders)
                         <tr>
                         <th >Customer </th>
-                        <td >{{$orders->cust_name}}</td>
+                        <td >{{$order->cust_name}}</td>
                         </tr>
 
                         <tr>
                         <th width="40%">Term</th>
-                        <td width="60%">{{$orders->term}}</td>
+                        <td width="60%">{{$order->term}}</td>
                         </tr>
 
                         <tr>
                         <th width="40%">PO Number</th>
-                        <td width="60%">{{$orders->po_number}}</td>
+                        <td width="60%">{{$order->po_number}}</td>
                         </tr>
 
                         <tr>
                         <th width="40%">Quotation Number</th>
-                        <td>{{$orders->quotation_number}}</td>
+                        <td>{{$order->quotation_number}}</td>
                         </tr>
 
                         <tr>
                         <th>PR Date</th>
-                        <td>{{$orders->pr_date}}</td>
+                        <td>{{$order->pr_date}}</td>
                         </tr>
 
                         <tr>
                         <th>Delivery Date</th>
-                        <td>{{$orders->delivery_date}}</td>
+                        <td>{{$order->delivery_date}}</td>
                         </tr>
-                    @endforeach
                     </table>
+                    </div>
+                    </div>
+        </div>
+        </div>
+        </div>
         </div>
         <br>
         <div class="row">
@@ -82,13 +69,11 @@
                  <div  id="msg"></div>
            
                 <div class="card">
-                            <div class="card-header">
-                           <h4 align="center">Item</h4>
-                            </div>
                             <div class="card-body">
+                                <h4 class="header-title">Item</h4>
                                 <div class="table-responsive">
-                                    <table id="item_table" class="table table-striped table-bordered second" style="width:100%">
-                                    <thead class="thead-dark">
+                                    <table id="item_table" class="table second">
+                                    <thead class="">
                                 <tr>
                                     <th>No.</th>
                                     <th >Item Description</th>
@@ -112,8 +97,8 @@
                                 </tr>
                         </thead>
                         <tbody>
-                        @if(count($items)>0)
-                        @foreach($items as $key=>$data)
+                        @if(count($order->items)>0)
+                        @foreach($order->items as $key=>$data)
                             
                             <tr>
                              
@@ -133,28 +118,35 @@
                                 <td>{{$data->margin_percent * 100}}%</td>
                                 <td id = "invoice">{{$data->invoice_no}}</td>
 
+                                <td id="status">
                                 @if($data->delivery_stat == "Delivered")
-                                <td id="status"><button class="badge-md badge-pill badge-success">{{$data->delivery_stat}}</button></td>
-                                @else
-                                <td id="status"><button class="badge-md badge-pill badge-warning">{{$data->delivery_stat}}</button></td>
+                                <span class="badge-md badge-pill badge-success">{{$data->delivery_stat}}</span>
+                                @elseif(trim($data->delivery_stat) != "")
+                                <span class="badge-md badge-pill badge-warning">{{$data->delivery_stat}}</span>
                                 @endif
-
+                                </td>
 
                                 <!-- <td id="status">{{$data->delivery_stat}}</td> -->
 
                                 <td  id="remarks">{{$data->remark}}</td>
                               
                             <td>
-                            <div class="btn-group dropdown">
-                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Action
-                                <span class="caret"></span></button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#" class="dropdown-item editbtn" id="{{$data->id}}" data-toggle="modal" data-target="#item_Modal">Edit</a></li>
-                                     <li><a href="#" class="dropdown-item deletebtn" id="{{$data->id}}">Delete</a></li> 
+                            @include('partials.split-button', [
+                                'class' => 'editbtn',
+                                'id' => $data->id, 
+                                'dataToggle' => 'modal',
+                                'dataTarget' => '#item_Modal',
+                                'label' => 'Edit',
+
+                                'items' => [
+                                    [
+                                        'class' => 'deletebtn',
+                                        'id' => $data->id,
+                                        'label' => 'Delete',
+                                    ],
+                                ],
+                            ]) 
                                  
-                                
-                                </ul>
-                            </div>
                           
                             
                         
@@ -175,7 +167,12 @@
 
                                         
                 </div>
-            </div>
+            </div><!-- card-body -->
+
+            </div><!-- card -->
+
+            </div><!-- col -->
+            </div><!-- row -->
 
                 <div id="item_Modal" class="modal fade" role="dialog">
             <div class="modal-dialog" id="modal-dialog">
@@ -317,11 +314,9 @@
                 </div>
             </div>
             
-        </div>
+        </div><!-- item modal -->
 
 
-    </div>
-</div>
 <script>
     $(document).ready(function(){
         $('#item_table').DataTable({
@@ -330,8 +325,8 @@
         });
 
         //end datatable
-        $(document).on('click','.editbtn',function(){
-           
+        $(document).on('click','.editbtn',function(e){
+           e.preventDefault();
            var id = $(this).attr('id');
            $('.form_output').html('');
 
@@ -434,7 +429,8 @@ $('.itemEdit_form').on('submit',function(event){
    })
 })
 
-   $(document).on('click','.deletebtn',function(){
+   $(document).on('click','.deletebtn',function(e){
+            e.preventDefault();
             var id = $(this).attr('id');
             var item = $(this).closest('tr').children('td.item_des').text();
 

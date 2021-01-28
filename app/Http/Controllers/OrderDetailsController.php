@@ -31,9 +31,9 @@ class OrderDetailsController extends Controller
 
     public function getItems($id){
     
-            $order = Orders::where('id',$id)->get();
-            $items = Items::where('order_id',$id)->get();
-            return view('itemDetails',compact('items','order'));
+            $order = Orders::find($id);
+            
+            return view('itemDetails',compact('order'));
        
             //return view('ordered_items',compact('items','order'));
 
