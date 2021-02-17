@@ -32,6 +32,7 @@
 
     <!-- modernizr css -->
     <script src="{{asset('assets/js/vendor/modernizr-2.8.3.min.js')}}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   
 </head>
 
@@ -63,6 +64,7 @@
                             <li><a href="{{url('form')}}"><i class="ti-receipt"></i> <span>Purchase Request</span></a></li>
                             <li><a href="{{url('customer')}}"><i class="ti-receipt"></i> <span>Customer</span></a></li>    
                              <li><a href="{{url('order')}}"><i class="ti-receipt"></i> <span>View Order</span></a></li>
+                             <li><a href="{{route('currency.index')}}"><i class="ti-receipt"></i> <span>Currencies</span></a></li>
 
                            
 
@@ -127,6 +129,8 @@
 
             
             <div class="main-content-inner">
+                @include('partials.alert', ['class' => 'mt-3'])
+
                 @yield('content')
             </div>
 

@@ -60,4 +60,7 @@ Auth::routes();
 Route::get('/',function(){
     return view('auth.login');
 });
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+Route::resource('currency', 'CurrencyController');
