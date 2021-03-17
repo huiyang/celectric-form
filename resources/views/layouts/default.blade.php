@@ -52,17 +52,21 @@
         <div class="sidebar-menu">
             <div class="sidebar-header">
                 <div class="logo">
-                    <a href="index.html"><img src="{{ url('assets/images/celectric-logo.png') }}" alt="logo"></a>
+                    <a href="{{url('form')}}"><img src="{{ url('assets/images/celectric-logo.png') }}" alt="logo"></a>
                 </div>
             </div>
             <div class="main-menu">
                 <div class="menu-inner">
                     <nav>
                         <ul class="metismenu" id="menu">
-                            <!-- <li class="{{Request::is('/') ? 'active' : ''}}"><a href="{{url('/')}}"><i class="ti-receipt"></i> <span>Dashboards</span></a></li> -->
                            
-                            <li><a href="{{url('form')}}"><i class="ti-receipt"></i> <span>Purchase Request</span></a></li>
-                            <li><a href="{{url('customer')}}"><i class="ti-receipt"></i> <span>Customer</span></a></li>    
+                             <li class="{{Request::is('/form') ? 'active' : ''}}"><a href="{{url('form')}}"><i class="ti-receipt"></i> <span>Purchase Request</span></a></li> 
+
+                            <!-- <li><a href="{{url('form')}}"><i class="ti-receipt"></i> <span>Purchase Request</span></a></li> -->
+                            <li><a href="{{url('customer')}}"><i class="ti-receipt"></i> <span>Customer</span></a></li> 
+
+                            <li><a href="{{url('supplier')}}"><i class="ti-receipt"></i> <span>Supplier</span></a></li> 
+
                              <li><a href="{{url('order')}}"><i class="ti-receipt"></i> <span>View Order</span></a></li>
                              <li><a href="{{route('currency.index')}}"><i class="ti-receipt"></i> <span>Currencies</span></a></li>
 

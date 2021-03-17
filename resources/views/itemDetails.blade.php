@@ -18,6 +18,11 @@
 <div class="row">
 
                     <div class="col-12 mt-5">
+                    @if(Session::has('success'))
+                    <div class="alert alert-success">
+                        <p>{{Session::get('success')}}</p>
+                    </div>
+                    @endif
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="header-title">Reference</h4>
@@ -71,6 +76,9 @@
                 <div class="card">
                             <div class="card-body">
                                 <h4 class="header-title">Item</h4>
+                                <div class="float-right">
+                                    <button class="btn btn-warning" id="edit_supplier_btn" data-toggle="modal" data-target="#supplier_Modal">Edit Supplier Details</button>
+                                </div>
                                 <div class="table-responsive">
                                     <table id="item_table" class="table second">
                                     <thead class="">
@@ -80,10 +88,10 @@
                                     <th>Model</th>
                                     <th>PO Quantity</th>
                                     <th>Order Quantity</th>
-                                    <th>Sell Price (RM)</th>
-                                    <th>Cost (RM)</th>
-                                    <th>Total Price (RM)</th>
-                                    <th>Total Cost (RM)</th>
+                                    <th>Sell Price</th>
+                                    <th>Cost </th>
+                                    <th>Total Price </th>
+                                    <th>Total Cost </th>
                                     <th>Supplier</th>
                                     <th>Term 2</th>
                                     <th>Lead Time (Week)</th>
@@ -107,8 +115,8 @@
                                 <td id="model">{{$data->model}}</td>
                                 <td>{{$data->po_qty}}</td>
                                 <td>{{$data->order_qty}}</td>
-                                <td>{{$data->sell_price}}</td>
-                                <td>{{$data->cost}}</td>
+                                <td>{{$data->currency_price."  ".$data->sell_price}}</td>
+                                <td>{{$data->currency_cost."  ".$data->cost}}</td>
                                 <td>{{$data->total_price}}</td>
                                 <td>{{$data->total_cost}}</td>
                                 <td>{{$data->supplier}}</td>
@@ -175,7 +183,7 @@
             </div><!-- row -->
 
                 <div id="item_Modal" class="modal fade" role="dialog">
-            <div class="modal-dialog" id="modal-dialog">
+            <div class="modal-dialog " id="modal-dialog">
                 <div class="modal-content">
                     <form method="post" id="itemEdit_form" class="itemEdit_form" action="{{url('items/edit')}}">
                         <div class="modal-header" id="modal-header"> 
@@ -244,13 +252,27 @@
                                 <label for="supplier">Supplier</label>
                                 </div>
                             
-                                <input type="text" name="supplier" id= "supplier"class="form-control" style="width:300px;" align="left" required="required"/>
+                                <!-- <input type="text" name="supplier" id= "supplier"class="form-control" style="width:300px;" align="left" required="required"/> -->
+                                <select name="supplier" id="supplier" class="form-control" style="width:300px;">
+                                    <option value="" id="defaultSupplier"></option>
+                                    <option value="">-----------------------------</option>
+                                    @foreach($supplier as $key=>$data)
+                                        <option value="{{$data->supplier}}">{{$data->supplier}}</option>
+                                        
+
+                                    @endforeach
+                                </select>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-4"><label for="term_2">Term 2</label></div>
                                 
-                                <input type="text" name="term_2" id= "term_2"class="form-control" style="width:300px;" align="left" required="required"/>
+                                <!-- <input type="text" name="term_2" id= "term_2"class="form-control" style="width:300px;" align="left" required="required"/> -->
+                                <select name="term_2" id="term_2" class="form-control" style="width:300px">
+                                   <option value="" id="t1"></option>
+                                   <option value="" id="t2"></option>
+                                   
+                                </select>
                             </div>
 
 
@@ -316,6 +338,106 @@
             
         </div><!-- item modal -->
 
+        <!--Supplier Modal--> 
+        <div id="supplier_Modal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg " id="modal-dialog">
+                <div class="modal-content">
+                    <form method="post" id="supplierEdit_form" class="supplierEdit_form" action="{{url('items/supplier/edit')}}">
+                        <div class="modal-header" id="modal-header"> 
+                            <h4 class="modal-title">Edit Supplier Details of Items</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        
+                        </div>
+                        <div class="modal-body">
+                            {{csrf_field()}}
+                            <span id="form_output_supplier"></span>
+                                <div class="row">
+                                    
+                                   <div class="col-lg-4">
+                                    <h5>Supplier</h5>
+                                   </div>
+
+                                   <div class="col-lg-4">
+                                    <h5>PO</h5>
+                                   </div>
+
+                                   <div class="">
+                                    <h5>Expected Delivery Date</h5>
+                                   </div>
+
+                                </div>
+                                <hr class="bold">
+
+                               
+                                @foreach($suppliers as $supplier)
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="col-12">
+                                                <h6>{{$supplier['supplier']}}</h6>
+                                            </div>
+                                            <div class="col-12">
+                                                @foreach($items as $key=>$item)
+
+                                                    @if($item['supplier'] == $supplier['supplier'])
+
+                                                        <p>{{$item['item_des']}}</p>
+
+                                                    @endif
+                                                  
+                                                @endforeach
+                                            </div>
+                                        </div>
+
+                                      
+                                            @foreach($supplier_info as $info)
+
+                                                @if($info['supplier'] == $supplier['supplier'])  <div class="col-lg-4">
+
+                                                    <input type="text" class="form-control supplier_po" style="width:200px;height:50px;" placeholder="Supplier PO Number" name="supplier_po[]" id="{{$supplier['supplier']}}" value="{{$info['supplier_po_num']}}"/>
+
+                                                 <input type="hidden" name="supplier[]" value="{{$supplier['supplier']}}"/>
+
+                                                 <input type="hidden" name="order_id" id="thisID" value="{{$supplier['order_id']}}">
+
+                                               
+
+                                           
+                                            
+                                          
+
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                          <input type="date" class="form-control" style="width:200px;height:50px;" id="expectedDate" name="expectedDate[]" value="{{$info['expected_delivery_date']}}" />
+                                        
+                                        </div> @endif
+                                         @endforeach
+                                    </div>
+                                <!---End foreach of supplier-->
+                                <hr>
+                                @endforeach
+
+
+
+
+
+                                
+                         
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" name="item_id" id="item_id" value=""/>
+                            <input type="hidden" name="button_action" id="button_action" value="update" />
+                           
+                        <input type="submit" name="submit" id="updatebtn" value="Update" class="btn btn-info" />
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-default"  id="test">Test</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+        </div><!-- supplier PO edit modal -->
+
 
 <script>
     $(document).ready(function(){
@@ -346,14 +468,28 @@
                    $('#cost').val(data.cost);
                    $('#total_price').val(data.total_price);
                    $('#total_cost').val(data.total_cost);
-                   $('#supplier').val(data.supplier);
-                   $('#term_2').val(data.term_2);
+                   $('#defaultSupplier').val(data.supplier);
+                   $('#defaultSupplier').html(data.supplier);
+                   
                    $('#leadtime').val(data.leadtime);
                    $('#margin').val(data.margin);
                    $('#margin_percent').val(data.margin_percent);
                    $('#invoice_no').val(data.invoice_no);
                    $('#delivery_stat').val(data.delivery_stat);
                    $('#remark').val(data.remark);
+
+                    var opposite="";
+                   if(data.term_2 == "With Term"){
+                     opposite = "Without Term";
+                    }
+                    if(data.term_2 =="Without Term"){
+                        opposite = "With Term";
+                    }
+                       
+                    $('#t1').val(data.term_2);
+                    $('#t2').val(opposite);
+                    $('#t1').html(data.term_2);
+                    $('#t2').html(opposite);
 
                    //$('#item_Modal').modal('show');
                    $('#item_Modal.modal').modal('show');
@@ -454,6 +590,7 @@ $('.itemEdit_form').on('submit',function(event){
         
     })
 
+
     function onlyNumberKey(evt) { 
           
           // Only ASCII charactar in that range allowed 
@@ -462,6 +599,40 @@ $('.itemEdit_form').on('submit',function(event){
               return false; 
           return true; 
       }
+      $('#test').on('click',function(){
+            var count = $('.supplier_po').length;
+            var supplier = $('.supplier_po');
+            for(var i =0;i<count;i++){
+               alert(supplier[i].id)
+                
+            }
+        // $('.supplier_po').each(function() {
+        //      alert( this.id );
+        // });
+        
+           
+      })
+
+      $('#edit_supplier_btn').on('click',function(event){
+          event.preventDefault();
+          var orderid = $('#thisID').val();
+          $('.supplier_po').each(function(){
+              var supplier = this.id;
+               // $(this).val(supplier);
+               $.ajax({
+                   url:"{{route('item.supplier_po')}}",
+                   method:"get",
+                   data:{orderid:orderid,supplier:supplier},
+                   dataType:'json',
+                   success:function(data){
+                      alert(data);
+                   }
+               })
+          })
+
+      })
+    
+     
 
      
 

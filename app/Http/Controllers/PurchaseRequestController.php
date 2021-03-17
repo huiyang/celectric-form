@@ -9,7 +9,8 @@ use App\Models\Customer;
 use App\Models\Orders;
 use App\Models\Items;
 use App\Models\User;
-
+use App\Models\Supplier;
+use App\Models\Currency;
 use Illuminate\Support\Facades\Auth;
 
 class PurchaseRequestController extends Controller
@@ -38,7 +39,18 @@ class PurchaseRequestController extends Controller
             $user_name = session()->get('name');
             $sales_person = User::whereNotIn('name',[$user_name])->get('name');
              $name = Customer::get('name')->toArray();
-             return view('form',['name'=>$name],['sales_person'=>$sales_person]);
+            $supplier = Supplier::select('supplier')->get();
+
+            $currency = Currency::select('name')->get();
+
+            $info = array(
+                'name'         => $name,
+                'sales_person' => $sales_person,
+                'supplier'     => $supplier,
+                'currency'     => $currency
+            );
+            //  return view('form',['name'=>$name],['sales_person'=>$sales_person],['supplier'=>$supplier]);
+            return view('form',$info);
              
              
         
@@ -64,7 +76,7 @@ class PurchaseRequestController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+   /* public function store(Request $request)
     {   
      //return $request->all();
         
@@ -85,7 +97,8 @@ class PurchaseRequestController extends Controller
         $order->pr_date      = $request->pr_date;
         $order->quotation_number = $request->quotation_number;
         $order->delivery_date   = $request->delivery_date;
-
+        $order->grand_total_price = $request->grand_total_price;
+        $order->grand_total_cost = $request->grand_total_cost;
         if($order->save()){
             $id = Orders::create($data)->id;
             //$order_id = $order->id;
@@ -100,6 +113,8 @@ class PurchaseRequestController extends Controller
                         $items->order_qty = $request->order_qty[$item];
                         $items->sell_price = $request->sell_price[$item];
                         $items->cost = $request->cost[$item];
+                        $items->currency_price = $request->currency_price[$item];
+                        $items->currency_cost = $request->currency_cost[$item];
                         $items->total_price = $request->total_price[$item];
                         $items->total_cost = $request->total_cost[$item];
                         $items->supplier = $request->supplier[$item];
@@ -122,7 +137,7 @@ class PurchaseRequestController extends Controller
       
                        
            
-        }
+        }*/
     /**
      * Display the specified resource.
      *
@@ -181,6 +196,8 @@ class PurchaseRequestController extends Controller
                         'order_qty' => $request->order_qty[$item],
                         'sell_price'     =>$request->sell_price[$item],
                         'cost'          =>$request->cost[$item],
+                        'currency_price'=>$request->currency_price[$item],
+                        'currency_cost'=>$request->currency_cost[$item],
                         'total_price'    =>$request->total_price[$item],
                         'total_cost'    =>$request->total_cost[$item],
                         'supplier'       =>$request->supplier[$item],

@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
+
 use Validator;
 use Illuminate\Http\Request;
 use App\Models\Customer;
@@ -11,6 +14,7 @@ class CustomerController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+      
     }
     
     public function getData(Request $request){
@@ -42,7 +46,8 @@ class CustomerController extends Controller
      
     }
     public function index(){
-     
+        $user = Auth::user();
+        Session::put('name', $user->name);
         return view('customer');
     }
 

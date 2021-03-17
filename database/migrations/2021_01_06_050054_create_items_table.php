@@ -25,13 +25,17 @@ class CreateItemsTable extends Migration
             $table->double('cost')->nullable();
             $table->double('total_price')->nullable();
             $table->double('total_cost')->nullable();
+            $table->string('currency_price')->nullable();
+            $table->string('currency_cost')->nullable();
             $table->string('supplier')->nullable();
+            $table->string('supplier_po_num')->nullable();
             $table->string('term_2')->nullable();
             $table->string('leadtime')->nullable();
             $table->double('margin')->nullable();
             $table->double('margin_percent')->nullable();
             $table->string('invoice_no')->nullable();
             $table->string('delivery_stat')->nullable();
+            $table->string('expected_delivery_date')->nullable();
             $table->string('remark')->nullable();
             $table->timestamps();
         });

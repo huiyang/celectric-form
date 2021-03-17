@@ -4,26 +4,34 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Collection;
 use App\Models\Orders;
 use App\Models\Items;
 use App\Models\Customer;
+use App\Models\Supplier;
+
+
+
 
 class OrderDetailsController extends Controller
 {
 
-    // public function __construct(){
-    //     $this->middleware('auth');
-    // }
-//        public function __construct()
-//    {
-//        $this->middleware('auth');
-//    }
+    
+
+ 
+       public function __construct()
+   {
+       $this->middleware('auth');
+   }
     public function getOrder(Request $request){
-           
+            $user = Auth::user();
+            Session::put('name', $user->name);
             $customer = Customer::select('name')->get();
             $sales_person_name =$request->session()->get('name');
             $orders = Orders::where('sales_person',$sales_person_name)->orderBy('created_at','desc')->get();
+            
+            
             return view('order',compact('orders','customer'));
              
         
@@ -32,10 +40,37 @@ class OrderDetailsController extends Controller
     public function getItems($id){
     
             $order = Orders::find($id);
-            
-            return view('itemDetails',compact('order'));
+            $supplier = Supplier::get();
+
+           $item = Items::select('item_des','supplier','supplier_po_num','expected_delivery_date')->where('order_id',$id)->get();
+
+           $suppliers = Items::select('order_id','supplier')->where('order_id',$id)->distinct()->get();
+
+           $s_details = Items::select('supplier_po_num','supplier','expected_delivery_date')->where('order_id',$id)->distinct()->get(); 
+      
+           $items = $item->collect([
+              [
+                  'item_des'=>'item_des',
+                  'supplier'=>['supplier'],
+                  'supplier_po_num'=>'supplier_po_num',
+                  'expected_delivery_date'=>'expected_delivery_date'
+
+                 
+              
+              ]
+         ]);
+
+         $supplier_info = $s_details->collect([
+            'supplier'=>'supplier',
+            'supplier_po_num'=>'supplier_po_num',
+            'expected_delivery_date'=>'expected_delivery_date',
+         ]);
+           
+      
+        
+            return view('itemDetails',compact('order','supplier','suppliers','items','supplier_info'));
        
-            //return view('ordered_items',compact('items','order'));
+            
 
          
         
@@ -43,7 +78,7 @@ class OrderDetailsController extends Controller
     }
 
     public function editItems(Request $request){
-       $id =$request->get('item_id');
+        $id =$request->get('item_id');
            $items = Items::find($id);
             
            $items->item_des = $request->item_des;
@@ -95,7 +130,34 @@ class OrderDetailsController extends Controller
                 'success' =>$msg,
             );
             echo json_encode($result);
-    } 
+    }
+    
+    public function editSupplierInfo(Request $request){
+
+            if(count($request->supplier)>0){
+                  $order_id = $request->order_id;
+                foreach($request->supplier as $key=>$v){
+                  
+                    $supplier = $request->supplier[$key];
+                    $supplier_po = $request->supplier_po[$key];
+                    $expectedDate = $request->expectedDate[$key];    
+                    $update = Items::where('order_id',$order_id)->where('supplier',$supplier)->update(['supplier_po_num'=>$supplier_po,'expected_delivery_date'=>$expectedDate]);
+                }
+
+                if($update){
+                   return back()->with('success','Update Successful');
+                }
+                
+                
+                
+            }
+            
+           
+         
+
+        
+    }
+
 
     public function deleteItem(Request $request){
         $item = Items::find($request->id);
@@ -130,9 +192,30 @@ class OrderDetailsController extends Controller
         echo json_encode($result);
     }
 
+    
+    public function findSupplierPO(Request $request){
+         $id = $request->orderid;
+         $supplier = $request->supplier;
+
+       $query = Items::select('supplier_po_num','expected_delivery_date')->where('order_id',$id)->where('supplier',$supplier)->distinct()->get();
+
+      //$query=Items::findorFail('order_id',$id);
+         $result = array(
+             'po_num' => $query->supplier_po_num,
+             'date'=>$query->expected_delivery_date,
+         );
+        
+         return response()->json($result);
+
+      
+        
+    }
+
     public function findItemByID(Request $request){
         $id = $request->input('id');
         $item = Items::find($id);
+        $supplier = Supplier::whereNotIn('supplier',[$item->supplier])->get('supplier');
+        $supplierArray = array($supplier);
         $result = array(
             'id'        =>$item->id,
             'item_des' =>$item->item_des,
@@ -150,7 +233,8 @@ class OrderDetailsController extends Controller
             'margin_percent'=>$item->margin_percent,
             'invoice_no'    =>$item->invoice_no,
             'delivery_stat'=>$item->delivery_stat,
-            'remark'    =>$item->remark
+            'remark'    =>$item->remark,
+            'allSupplier'=>$supplierArray
 
 
         );

@@ -22,6 +22,8 @@ class CreateOrdersTable extends Migration
             $table->date('pr_date');
             $table->string('quotation_number');
             $table->date('delivery_date');
+            $table->double('grand_total_price');
+            $table->double('grand_total_cost');
            
             $table->timestamps();
             

@@ -30,12 +30,17 @@
                             <th>Date</th>
                             <th>Quotation</th> 
                             <th>Actual Delivery</th>
+                            <th>Profit (RM)</th>
+                            <th>%</th>
                             <th> Actions </th>
                     </tr>
                 </thead>
                 <tbody>
                      @if(count($orders)>0)
                     @foreach($orders as $key=>$data)
+                    <span class="collapse">{{$profit = $data->grand_total_price - $data->grand_total_cost}}
+                    {{$profit_percent = ($profit/$data->grand_total_price)*100}}</span>
+                     
                     <tr>
                           <td>{{++$key}}</td>
                             <td>{{$data->cust_name}}</td>
@@ -44,6 +49,8 @@
                             <td>{{$data->pr_date}}</td>
                             <td>{{$data->quotation_number}}</td>
                             <td>{{$data->delivery_date}}</td>
+                           <td>{{$profit}}</td>
+                           <td id="{{$profit_percent}}">{{round($profit_percent,2)}} %</td>
                             <td>
                                <div class="btn-group dropdown ">
                                     <!-- <a href="/order/items/{{$data->id}}" target="_blank" class="btn btn-primary">View</a> -->
