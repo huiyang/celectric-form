@@ -135,24 +135,25 @@
             <!-- end of orders table -->
             <hr class="hrbar">
             <br>
-             <div class="row">
-                <div class="col-3">
+             <div class="row ">
+                
+                <div class="col-lg-3  ">
                     <h6>Choose currency for : </h6>
                 </div>
 
                 <div class="col">
                     <div class="form-check-inline">
-                        <label class="form-check-label">
+                        <label class="form-check-label ">
                             <input type="radio" class="form-check-input" name="currency_option" id="currency_option" value="1">All Items
                         </label>
                     </div>
 
                     <div class="form-check-inline">
-                        <label class="form-check-label">
+                        <label class="form-check-label ">
                             <input type="radio" class="form-check-input" name="currency_option" id="currency_option" value="2" >Each Item
                         </label>
                      </div>
-
+                    
                 </div>
 
              </div>
@@ -279,8 +280,10 @@
                         </tfoot>
                     </table>
                     <div class="row">
-                        <div class="col-lg-12">
-                            <input type="submit" name="" id="submitbtn" value="Submit" class="float-right btn btn-primary">
+                        <div class="col-lg-12" id="submitdiv">
+                            <!-- <input type="submit" name="" id="submitbtn" value="Submit" class="float-right btn btn-primary"> -->
+
+                         
                             
                             <!-- <button class="btn btn-primary float-right" id="prsubmit">Submit</button> -->
                         </div>
@@ -294,8 +297,7 @@
 </div>
 </div>
 </div>
-
-
+  
 <script type="text/javascript">
 //only number
 
@@ -407,62 +409,13 @@ $(document).ready(function(){
 //
    
 
-    // if user didnt select currecy , cannot fill in the cost and price
 
-   
-   $('tbody').delegate('#currency_price,#currency_cost','change',function(){
-       var tr = $(this).parent().parent();
-        var currency_price_value = tr.find('#currency_price').val();
-        var currency_cost_value = tr.find('#currency_cost').val();
-        tr.find('.currency_price').html(currency_price_value+" ");
-        tr.find('.currency_cost').html(currency_cost_value+" ");
-   })
+  
 
   
 
     //calculate total for each row
-    $('tbody').delegate('#po_qty,#order_qty,#sell_price,#cost','keyup',function(){
-        
-        var tr = $(this).parent().parent();
-        var poqty = tr.find('#po_qty').val();
-        var sellprc = tr.find('#sell_price').val();
-        var ordqty = tr.find('#order_qty').val();
-        var cost = tr.find('#cost').val();
-        //calculation
-        var totalcost = (ordqty*cost).toFixed(2);
-        var totalprc = (poqty*sellprc).toFixed(2);
-        var margin = (totalprc-totalcost);
-        var marginCal = margin/totalprc;
-        var marginPercent = marginCal.toFixed(2);
-
-      
-        
-        
-
-     //  tr.find('#thiscost').html('x '+ordqty+"<br> = " +currency_cost+" "+totalcost);
-      // tr.find('#thisprice').html('x '+poqty+"<br> = " +currency_price+" "+totalprc);
-
-      tr.find('#qty1').html('x '+poqty+"<br> =");
-      tr.find('#thisprice').html(totalprc);
-
-      tr.find('#qty2').html('x '+ordqty+"<br> =");
-      tr.find('#thiscost').html(totalcost);
-
-
-    
-//set value
-        tr.find('#total_cost').val(totalcost);
-        //tr.find('#total_cost').html(totalcost);
-        tr.find('#total_price').val(totalprc);
-        tr.find('#margin').val(margin);
-        tr.find('#margin_percent').val(marginPercent);
-
-      
-        total();
-       
-       
-     
-    });
+  
 
     function total(){
         var row = $('tbody tr').length;
@@ -488,8 +441,8 @@ $(document).ready(function(){
             
              
            if(this.value == 1){
-            var currency_cost = '<select name="currency_cost[]" id="currency_cost" class="form-control" required="required" style="height:40px;"> <option value="">Currency</option>@foreach($currency as $c )<option value="{{$c["name"]}}">{{$c["name"]}}</option> @endforeach</select>';
-            var currency_price = '<select name="currency_price[]" id="currency_price" class="form-control" required="required" style="height:40px;"> <option value="">Currency</option>@foreach($currency as $c )<option value="{{$c["name"]}}">{{$c["name"]}}</option> @endforeach</select>';
+            var currency_cost = '<select name="currency_cost[]" id="currency_cost" class="form-control" required="required" style="height:40px;" > <option value="">Currency</option>@foreach($currency as $c )<option value="{{$c["name"]}}">{{$c["name"]}}</option> @endforeach</select>';
+            var currency_price = '<select name="currency_price[]" id="currency_price" class="form-control" required="required" style="height:40px;" > <option value="">Currency</option>@foreach($currency as $c )<option value="{{$c["name"]}}">{{$c["name"]}}</option> @endforeach</select>';
 
             $('#selling_price_header').append(currency_price);
             $('#cost_header').append(currency_cost);
@@ -500,9 +453,9 @@ $(document).ready(function(){
 
         '<td><input type="text" name="order_qty[]" id="order_qty" class="form-control" required="required"  onkeypress="return onlyNumberKey(event)"></td>'+
 
-        ' <td><input type="hidden" name="currency_price[]" class="currency_price" ><input type="text" name="sell_price[]" id="sell_price" class="form-control decimal" required="required"><br><span id="thisprice"></span></td>'+
+        ' <td><input type="hidden" name="currency_price[]" class="currency_price" ><input type="text" name="sell_price[]" id="sell_price" class="form-control decimal" required="required"><br><span id="qty1"></span><span id="this_currency_price"></span><span id="thisprice"></span></td>'+
 
-        '<td><input type="hidden" name="currency_cost[]" class="currency_cost" ><input type="text" name="cost[]" id="cost" class="form-control decimal" required="required" ><br><span id="thiscost"></span></td>'+
+        '<td><input type="hidden" name="currency_cost[]" class="currency_cost" ><input type="text" name="cost[]" id="cost" class="form-control decimal" required="required" ><br><span id="qty2"></span><span id="this_currency_cost"></span><span id="thiscost"></span></td>'+
 
         '<td class="collapse"><input type="text" name="total_price[]" id="total_price" class="form-control"></td>'+
 
@@ -510,7 +463,7 @@ $(document).ready(function(){
 
         ' <td><select name="supplier[]" id="supplier" class="form-control" required="required">                     <option value=""></option> @foreach($supplier as $s) <option value="{{$s["supplier"]}}" clas="form-control">{{$s["supplier"]}}</option>@endforeach</select></td>'+
 
-        '<td> <select name="term_2[]" id="term_2" class="form-control"><option value="With Term">With Term</option><option value="Without Term">Without Term</option></select></td>'+
+        '<td> <select name="term_2[]" id="term_2" class="form-control" style="width:115px;"><option value="With Term">With Term</option><option value="Without Term">Without Term</option></select></td>'+
 
         '<td><input type="text" name="leadtime[]" id="leadtime" class="form-control" ></td>'+
 
@@ -523,6 +476,7 @@ $(document).ready(function(){
         '</tr>'; 
       
               option = 1;
+              $('#submitdiv').html('<input type="submit" name="" id="submitbtn" value="Submit" class="float-right btn btn-primary">');
              
            }else if(this.value ==2){
                
@@ -532,9 +486,9 @@ $(document).ready(function(){
 
         '<td><input type="text" name="order_qty[]" id="order_qty" class="form-control" required="required"  onkeypress="return onlyNumberKey(event)"></td>'+
 
-        ' <td><input type="text" name="sell_price[]" id="sell_price" class="form-control decimal" required="required"><br><select name="currency_price[]" id="currency_price" class="form-control" required="required" style="height:40px;"><option value="">Currency</option> @foreach($currency as $c )<option value="{{$c["name"]}}">{{$c["name"]}}</option>@endforeach</select><br><span id="qty1"></span><span class="currency_price"></span><span id="thisprice"></span></td>'+
+        ' <td><input type="text" name="sell_price[]" id="sell_price" class="form-control decimal" required="required"><br><select name="currency_price[]" id="currency_price" class="form-control" required="required" style="height:40px;"><option value="">Currency</option> @foreach($currency as $c )<option value="{{$c["name"]}}">{{$c["name"]}}</option>@endforeach</select><br><span id="qty1"></span><span id="this_currency_price"></span><span id="thisprice"></span></td>'+
 
-        '<td><input type="text" name="cost[]" id="cost" class="form-control decimal" required="required" ><br><select name="currency_cost[]" id="currency_cost" class="form-control" required="required" style="height:40px;"><option value="">Currency</option>@foreach($currency as $c )<option value="{{$c["name"]}}">{{$c["name"]}}</option>@endforeach</select><br><span id="qty2"></span><span class="currency_cost"></span><span id="thiscost"></span></td>'+
+        '<td><input type="text" name="cost[]" id="cost" class="form-control decimal" required="required" ><br><select name="currency_cost[]" id="currency_cost" class="form-control" required="required" style="height:40px;"><option value="">Currency</option>@foreach($currency as $c )<option value="{{$c["name"]}}">{{$c["name"]}}</option>@endforeach</select><br><span id="qty2"></span><span id="this_currency_cost"></span><span id="thiscost"></span></td>'+
 
         '<td class="collapse"><input type="text" name="total_price[]" id="total_price" class="form-control"></td>'+
 
@@ -557,6 +511,7 @@ $(document).ready(function(){
          $('#cost_header').html('');
 
          option = 2;
+         $('#submitdiv').html('<input type="submit" name="" id="submitbtn" value="Submit" class="float-right btn btn-primary">');
       
 
     }
@@ -568,11 +523,16 @@ $(document).ready(function(){
 
         $('.addRow').on('click',function(){
        // addRow(option);
-       addnewrow();
+              addnewrow();
+             
     });
 
     function addnewrow(){
         $('tbody').append(newRow);
+        if(option ==1){
+            setCurrencyForAllItems();
+        }
+       
     }
     
     //delete row
@@ -585,6 +545,7 @@ $(document).ready(function(){
              total();
         }
        
+       
     });
  
 
@@ -593,7 +554,107 @@ $(document).ready(function(){
         var thiscostcurrency = $('#currency_cost').val()
         $('.currency_price').val(thispricecurrency);
         $('.currency_cost').val(thiscostcurrency);
-    })
+    });
+
+    // change on currency also change in label
+
+    
+   
+
+    $('tbody').delegate('#po_qty,#order_qty,#sell_price,#cost','keyup',function(){
+        
+        var tr = $(this).parent().parent();
+        var poqty = tr.find('#po_qty').val();
+        var sellprc = tr.find('#sell_price').val();
+        var ordqty = tr.find('#order_qty').val();
+        var cost = tr.find('#cost').val();
+        //calculation
+        var totalcost = (ordqty*cost).toFixed(2);
+        var totalprc = (poqty*sellprc).toFixed(2);
+        var margin = (totalprc-totalcost);
+        var marginCal = margin/totalprc;
+        var marginPercent = marginCal.toFixed(2);
+
+      
+        
+       
+
+    
+
+     
+
+        tr.find('#qty1').html('x '+poqty+"<br> =");
+        tr.find('#thisprice').html(totalprc);
+
+        tr.find('#qty2').html('x '+ordqty+"<br> =");
+        tr.find('#thiscost').html(totalcost);
+      
+
+
+    
+//set value
+        tr.find('#total_cost').val(totalcost);
+        //tr.find('#total_cost').html(totalcost);
+        tr.find('#total_price').val(totalprc);
+        tr.find('#margin').val(margin);
+        tr.find('#margin_percent').val(marginPercent);
+
+      
+        total();
+       
+       
+     
+    });
+
+   
+   $('tbody').delegate('#currency_price,#currency_cost','change',function(){
+    var tr = $(this).parent().parent();
+    var currency_price_value ="";
+    var currency_cost_value = "";
+
+   
+       
+       if(option ==2){
+          
+         currency_price_value = tr.find('#currency_price').val();
+         currency_cost_value = tr.find('#currency_cost').val();
+        tr.find('#this_currency_price').html(currency_price_value+" ");
+        tr.find('#this_currency_cost').html(currency_cost_value+" ");
+       }
+       
+   })
+ 
+ $(document).on('change','#currency_price,#currency_cost',function(){
+     setCurrencyForAllItems();
+ })
+
+   function setCurrencyForAllItems(){
+       var row = $('span[id=this_currency_cost]').length;
+        var currency_price_value = $('#currency_price').val();
+        var currency_cost_value = $('#currency_cost').val();
+            for(var i = 0;i<row;i++){
+                $('span[id=this_currency_price]').eq(i).html(currency_price_value+" ");
+            $('span[id=this_currency_cost]').eq(i).html(currency_cost_value+" ");
+              
+                
+
+        }
+                            
+
+   }
+
+   
+  
+
+   
+   
+
+   
+   
+ 
+   
+   
+    
   
  
    
