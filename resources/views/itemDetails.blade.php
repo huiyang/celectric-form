@@ -23,13 +23,14 @@
                         <p>{{Session::get('success')}}</p>
                     </div>
                     @endif
+
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="header-title">Reference</h4>
         
        
                     <div class="row">
                     <div class="col-12 col-lg-6">
+                    <h4 class="header-title">Reference</h4>
                     <table class="ordertable table table-bordered table-hovered">
                         <tr>
                         <th >Customer </th>
@@ -62,10 +63,22 @@
                         </tr>
                     </table>
                     </div>
-                    </div>
+
+                <div class="col-12 col-lg-6">
+                    <h4 class="header-title">Summary</h4>
+                    <table class="ordertable table table-bordered table-hovered">
+                        <tr><th width="40%">Total Price: </th><td width="60%">{{ $order->displayTotalPrice }}</td></tr>
+                        <tr><th width="40%">Total Cost: </th><td width="60%">{{ $order->displayTotalCost }}</td></tr>
+                        <tr><th width="40%">Total Profit: </th><td width="60%">{{ $order->displayTotalProfit }}</td></tr>
+                        <tr><th width="40%">% of Profit: </th><td width="60%">{{ $order->displayProfitPercentage }}</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         </div>
         </div>
-        </div>
+
         </div>
         <br>
         <div class="row">
@@ -115,10 +128,10 @@
                                 <td id="model">{{$data->model}}</td>
                                 <td>{{$data->po_qty}}</td>
                                 <td>{{$data->order_qty}}</td>
-                                <td>{{$data->currency_price."  ".$data->sell_price}}</td>
-                                <td>{{$data->currency_cost."  ".$data->cost}}</td>
-                                <td>{{$data->total_price}}</td>
-                                <td>{{$data->total_cost}}</td>
+                                <td>{{$data->displaySellPrice}}</td>
+                                <td>{{$data->displayCost}}</td>
+                                <td>{{$data->displayTotalPrice}}</td>
+                                <td>{{$data->displayTotalCost}}</td>
                                 <td>{{$data->supplier}}</td>
                                 <td>{{$data->term_2}}</td>
                                 <td>{{$data->leadtime}}</td>
@@ -281,7 +294,7 @@
                                 <div class="col-4">                        <label for="leadtime">Lead Time (Week)</label>
                             </div>
                                 <input type="text" name="leadtime" id= "leadtime"class="form-control" style="width:300px;" align="left" required="required"/>
-                            </div>
+                            </div>  
 
                             
                             
@@ -408,7 +421,7 @@
                                         </div>
 
                                         <div class="col-lg-4">
-                                          <input type="date" class="form-control" style="width:200px;height:50px;" id="expectedDate" name="expectedDate[]" value="{{$info['expected_delivery_date']}}" />
+                                          <input type="date" class="form-control" style="width:200px;height:50px;" id="expectedDate" name="expectedDate[]" value="{{$info['expected_delivery_date']->format('Y-m-d')}}" />
                                         
                                         </div> @endif
                                          @endforeach

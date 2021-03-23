@@ -441,8 +441,8 @@ $(document).ready(function(){
             
              
            if(this.value == 1){
-            var currency_cost = '<select name="currency_cost[]" id="currency_cost" class="form-control" required="required" style="height:40px;" > <option value="">Currency</option>@foreach($currency as $c )<option value="{{$c["name"]}}">{{$c["name"]}}</option> @endforeach</select>';
-            var currency_price = '<select name="currency_price[]" id="currency_price" class="form-control" required="required" style="height:40px;" > <option value="">Currency</option>@foreach($currency as $c )<option value="{{$c["name"]}}">{{$c["name"]}}</option> @endforeach</select>';
+            var currency_cost = '<select name="currency_cost[]" id="currency_cost" class="form-control" required="required" style="height:40px;" > <option value="">Currency</option>@foreach($currency as $c )<option value="{{$c["code"]}}">{{$c["name"]}}</option> @endforeach</select>';
+            var currency_price = '<select name="currency_price[]" id="currency_price" class="form-control" required="required" style="height:40px;" > <option value="">Currency</option>@foreach($currency as $c )<option value="{{$c["code"]}}">{{$c["name"]}}</option> @endforeach</select>';
 
             $('#selling_price_header').append(currency_price);
             $('#cost_header').append(currency_cost);

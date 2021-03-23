@@ -7,7 +7,7 @@ require 'recipe/antweb.php';
 inventory('hosts.yml');
 
 // Project name
-//set('project_path', '{{release_path}}');
+set('project_path', '{{release_path}}');
 
 // Shared files/dirs between deploys 
 set('shared_files', [

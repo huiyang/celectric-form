@@ -41,7 +41,7 @@ class PurchaseRequestController extends Controller
              $name = Customer::get('name')->toArray();
             $supplier = Supplier::select('supplier')->get();
 
-            $currency = Currency::select('name')->get();
+            $currency = Currency::select('name', 'code')->get();
 
             $info = array(
                 'name'         => $name,
@@ -185,7 +185,8 @@ class PurchaseRequestController extends Controller
 
     public function addOrder(Request $request){
         $data = $request->all();
-        $id = Orders::create($data)->id;
+        $order = Orders::create($data);
+        $id = $order->id;
         if(count($request->item_des)>0){
             foreach($request->item_des as $item=>$v){
                 $items = array(
@@ -214,6 +215,9 @@ class PurchaseRequestController extends Controller
                 Items::insert($items);
             }
         }
+        
+        $order->recalculateTotal()->save();
+
         Session::flash('success','Order request received.');
         return redirect('/form');
     }
