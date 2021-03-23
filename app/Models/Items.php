@@ -14,6 +14,18 @@ class Items extends Model
     protected $casts = [
         'expected_delivery_date' => 'date',
     ];
+
+    public static function boot() {
+        parent::boot();
+
+        static::updated(function($model) {
+            $model->order->recalculateTotal()->save();
+        });
+
+        static::deleted(function($model) {
+            $model->order->recalculateTotal()->save();
+        });
+    }
     
     public function order(){
         return $this->belongsTo(Orders::class);

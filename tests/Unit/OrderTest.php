@@ -42,7 +42,7 @@ class OrderTest extends TestCase
                 'cost' => 5,
                 'total_cost' => 5,
             ]), 'items')
-            ->create(['currency' => 'MYR']);
+            ->create();
 
         $order->refresh();
 

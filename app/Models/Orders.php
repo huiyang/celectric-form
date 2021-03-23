@@ -24,6 +24,7 @@ class Orders extends Model
     }
 
     public function recalculateTotal() {
+        $this->currency = currency()->getUserCurrency();
         $this->grand_total_price = $this->items->sum('convertedTotalPrice');
         $this->grand_total_cost = $this->items->sum('convertedTotalCost');
         
@@ -47,7 +48,9 @@ class Orders extends Model
     }
 
     public function getDisplayProfitPercentageAttribute() {
-        return number_format(($this->grand_total_price - $this->grand_total_cost) / $this->grand_total_price * 100, 2) . '%';
+        if ($this->grand_total_price != 0) {
+            return number_format(($this->grand_total_price - $this->grand_total_cost) / $this->grand_total_price * 100, 2) . '%';
+        }
     }
 
     protected function getCurrency() {

@@ -39,7 +39,10 @@
                      @if(count($orders)>0)
                     @foreach($orders as $key=>$data)
                     <span class="collapse">{{$profit = $data->grand_total_price - $data->grand_total_cost}}
-                    {{$profit_percent = ($profit/$data->grand_total_price)*100}}</span>
+                    @php
+                        $profit_percent = $data->grand_total_price != 0 ? ($profit/$data->grand_total_price)*100 : null;
+                    @endphp
+                    </span>
                      
                     <tr>
                           <td>{{++$key}}</td>
@@ -50,7 +53,13 @@
                             <td>{{$data->quotation_number}}</td>
                             <td>{{$data->delivery_date}}</td>
                            <td>{{$profit}}</td>
-                           <td id="{{$profit_percent}}">{{round($profit_percent,2)}} %</td>
+                           <td>
+                                @isset($profit_percent)
+                                    {{round($profit_percent,2)}} %
+                                @else
+                                    --
+                                @endisset
+                            </td>
                             <td>
                                <div class="btn-group dropdown ">
                                     <!-- <a href="/order/items/{{$data->id}}" target="_blank" class="btn btn-primary">View</a> -->
