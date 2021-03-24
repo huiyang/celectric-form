@@ -421,7 +421,7 @@
                                         </div>
 
                                         <div class="col-lg-4">
-                                          <input type="date" class="form-control" style="width:200px;height:50px;" id="expectedDate" name="expectedDate[]" value="{{$info['expected_delivery_date']->format('Y-m-d')}}" />
+                                          <input type="date" class="form-control" style="width:200px;height:50px;" id="expectedDate" name="expectedDate[]" value="{{ isset($info['expected_delivery_date']) ? $info['expected_delivery_date']->format('Y-m-d') : '' }}" />
                                         
                                         </div> @endif
                                          @endforeach
@@ -482,7 +482,7 @@
                    $('#total_price').val(data.total_price);
                    $('#total_cost').val(data.total_cost);
                    $('#defaultSupplier').val(data.supplier);
-                   $('#defaultSupplier').html(data.supplier);
+                   $('#defaultSupplier').html(data.supplier_name);
                    
                    $('#leadtime').val(data.leadtime);
                    $('#margin').val(data.margin);

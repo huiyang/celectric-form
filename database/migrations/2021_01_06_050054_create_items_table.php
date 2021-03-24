@@ -34,7 +34,7 @@ class CreateItemsTable extends Migration
             $table->double('margin')->nullable();
             $table->double('margin_percent')->nullable();
             $table->string('invoice_no')->nullable();
-            $table->string('delivery_stat')->nullable();
+            $table->timestamp('delivery_stat')->nullable();
             $table->string('expected_delivery_date')->nullable();
             $table->string('remark')->nullable();
             $table->timestamps();

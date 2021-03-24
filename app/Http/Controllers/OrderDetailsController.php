@@ -29,7 +29,9 @@ class OrderDetailsController extends Controller
             Session::put('name', $user->name);
             $customer = Customer::select('name', 'id')->get();
             $sales_person_name =$request->session()->get('name');
-            $orders = Orders::where('sales_person',$sales_person_name)->orderBy('created_at','desc')->get();
+            $orders = Orders::latest()
+                // ->where('sales_person',$sales_person_name)
+                ->orderBy('created_at','desc')->get();
             
             
             return view('order',compact('orders','customer'));
@@ -89,8 +91,8 @@ class OrderDetailsController extends Controller
            $items->cost = $request->cost;
            $items->total_price = $request->total_price;
            $items->total_cost= $request->total_cost;
-           $items->supplier_id= $request->supplier;
-           $items->supplier= Supplier::find($request->supplier)->name;
+           $items->supplier_id= $request->supplier ?: null;
+           $items->supplier= null != Supplier::find($request->supplier) ? Supplier::find($request->supplier)->name : null;
            $items->term_2= $request->term_2;
            $items->leadtime= $request->leadtime;
            $items->margin= $request->margin;
@@ -228,7 +230,8 @@ class OrderDetailsController extends Controller
             'cost'       =>$item->cost,
             'total_price'=>$item->total_price,
             'total_cost'=>$item->total_cost,
-            'supplier'  =>$item->supplier,
+            'supplier'  =>$item->supplierModel->id ?? null,
+            'supplier_name'  =>$item->supplierModel->name ?? null,
             'term_2'    =>$item->term_2,
             'leadtime'  =>$item->leadtime,
             'margin'    =>$item->margin,
