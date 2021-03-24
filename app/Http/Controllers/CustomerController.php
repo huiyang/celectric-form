@@ -20,7 +20,7 @@ class CustomerController extends Controller
     public function getData(Request $request){
        
         $addby = $request->session()->get('name');
-        $customer = Customer::select('id','name')->get();
+        $customer = Customer::select('id','name','term')->get();
         return DataTables::of($customer)
         ->addColumn('action',function($customers){
              return '
@@ -72,6 +72,7 @@ class CustomerController extends Controller
                 
                 $customer = new Customer([
                     'name' =>$request->get('custname'),
+                    'term' =>$request->get('term'),
                     'added_by'=>$request->session()->get('name')
                 ]);
 
@@ -86,6 +87,7 @@ class CustomerController extends Controller
                 $customer = Customer::find($request->get('cust_id'));
                
                 $customer->name = $request->get('custname');
+                $customer->term = $request->get('term');
                 $customer->save();
                 $success_output = '<div class="alert alert-success">Data Updated</div>';
             }

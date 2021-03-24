@@ -121,7 +121,7 @@
                 <option value="" id="customer"></option>
                 <option value="">---------------</option>
                 @foreach($customer as $cust)
-                <option value="{{$cust['name']}}">{{$cust['name']}}</option>
+                <option value="{{$cust['id']}}">{{$cust['name']}}</option>
                 @endforeach
                 </select>
          

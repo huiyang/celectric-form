@@ -97,7 +97,7 @@
                                 <th>Total Price (RM)</th>
                                 <th>Total Cost (RM)</th>
                                 <th>Supplier</th>
-                                <th>Term 2</th>
+                                <th>Term</th>
                                 <th>Lead Time (Week)</th>
                                 <th>Total Margin</th>
                                 <th>%</th>
@@ -222,7 +222,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="term_2">Term 2</label>
+                        <label for="term_2">Term</label>
                         <input type="text" name="term_2" id= "term_2"class="form-control" style="width:300px;" align="left"/>
                     </div>
 

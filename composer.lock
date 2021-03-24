@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/antwebstudio/deployer-recipe.git",
-                "reference": "5130ca407c8a6e7ef13231b17fbd0a458c7bff14"
+                "reference": "ca8d3a8bd74503dde6fc22fcc18a45c789895588"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antwebstudio/deployer-recipe/zipball/5130ca407c8a6e7ef13231b17fbd0a458c7bff14",
-                "reference": "5130ca407c8a6e7ef13231b17fbd0a458c7bff14",
+                "url": "https://api.github.com/repos/antwebstudio/deployer-recipe/zipball/ca8d3a8bd74503dde6fc22fcc18a45c789895588",
+                "reference": "ca8d3a8bd74503dde6fc22fcc18a45c789895588",
                 "shasum": ""
             },
             "require": {
@@ -36,7 +36,7 @@
                     "email": "chy1988@antwebstudio.com"
                 }
             ],
-            "time": "2020-12-07T06:34:08+00:00"
+            "time": "2021-03-18T11:20:16+00:00"
         },
         {
             "name": "asm89/stack-cors",

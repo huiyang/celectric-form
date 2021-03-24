@@ -62,10 +62,10 @@
             <div class="form-group row">
                 <label for="custname" class="col-sm-4 col-form-label">Customer Name</label>
                     <div class="col-sm-8">
-                       <select name="cust_name" id="cust_name" class="form-control" required="required">
+                       <select name="customer_id" id="cust_name" class="form-control" required="required">
                         <option > </option>
-                      @foreach($name as $custName)
-                      <option value="{{$custName['name']}}">{{$custName['name']}}</option>
+                      @foreach($customers as $customer)
+                      <option value="{{$customer->id}}">{{$customer->name}}</option>
                       @endforeach
                        </select>
                      </div>
@@ -245,7 +245,7 @@
                 <select name="supplier[]" id="supplier" class="form-control" required="required">
                     <option value=""></option>
                     @foreach($supplier as $s)
-                        <option value="{{$s['supplier']}}" clas="form-control">{{$s['supplier']}}</option>
+                        <option value="{{$s['id']}}" clas="form-control">{{$s['supplier']}}</option>
                     @endforeach
                 </select>
             </td>
@@ -461,7 +461,7 @@ $(document).ready(function(){
 
         '<td class="collapse"><input type="text" name="total_cost[]" id="total_cost" class="form-control"></td>'+
 
-        ' <td><select name="supplier[]" id="supplier" class="form-control" required="required">                     <option value=""></option> @foreach($supplier as $s) <option value="{{$s["supplier"]}}" clas="form-control">{{$s["supplier"]}}</option>@endforeach</select></td>'+
+        ' <td><select name="supplier[]" id="supplier" class="form-control" required="required">                     <option value=""></option> @foreach($supplier as $s) <option value="{{$s["id"]}}" clas="form-control">{{$s["supplier"]}}</option>@endforeach</select></td>'+
 
         '<td> <select name="term_2[]" id="term_2" class="form-control" style="width:115px;"><option value="With Term">With Term</option><option value="Without Term">Without Term</option></select></td>'+
 

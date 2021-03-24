@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Customer;
 
 class Orders extends Model
 {
     use \Illuminate\Database\Eloquent\Factories\HasFactory;
     
-    protected $fillable =['sales_person','cust_name','term','po_number','pr_date','quotation_number','delivery_date','grand_total_price','grand_total_cost'];
+    protected $fillable =['sales_person','cust_name','term','po_number','pr_date','quotation_number','delivery_date','grand_total_price','grand_total_cost','customer_id'];
     
     public static function boot() {
         parent::boot();
@@ -33,6 +34,10 @@ class Orders extends Model
     
     public function items(){
         return $this->hasMany(Items::class,'order_id');
+    }
+    
+    public function customer(){
+        return $this->belongsTo(Customer::class,'customer_id');
     }
 
     public function getDisplayTotalPriceAttribute() {

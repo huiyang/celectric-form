@@ -27,7 +27,7 @@ class OrderDetailsController extends Controller
     public function getOrder(Request $request){
             $user = Auth::user();
             Session::put('name', $user->name);
-            $customer = Customer::select('name')->get();
+            $customer = Customer::select('name', 'id')->get();
             $sales_person_name =$request->session()->get('name');
             $orders = Orders::where('sales_person',$sales_person_name)->orderBy('created_at','desc')->get();
             
@@ -89,7 +89,8 @@ class OrderDetailsController extends Controller
            $items->cost = $request->cost;
            $items->total_price = $request->total_price;
            $items->total_cost= $request->total_cost;
-           $items->supplier= $request->supplier;
+           $items->supplier_id= $request->supplier;
+           $items->supplier= Supplier::find($request->supplier)->name;
            $items->term_2= $request->term_2;
            $items->leadtime= $request->leadtime;
            $items->margin= $request->margin;
@@ -118,7 +119,8 @@ class OrderDetailsController extends Controller
 
     public function editOrder(Request $request){
             $order = Orders::find($request->get('order_id'));
-            $order->cust_name = $request->customer;
+            $order->customer_id = $request->customer;
+            $order->cust_name = Customer::find($request->customer)->name;
             $order->term = $request->term;
             $order->po_number=$request->po_number;
             $order->quotation_number = $request->quotation_number;

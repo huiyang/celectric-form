@@ -34,12 +34,12 @@
                     <table class="ordertable table table-bordered table-hovered">
                         <tr>
                         <th >Customer </th>
-                        <td >{{$order->cust_name}}</td>
+                        <td >{{$order->customer->name}}</td>
                         </tr>
 
                         <tr>
                         <th width="40%">Term</th>
-                        <td width="60%">{{$order->term}}</td>
+                        <td width="60%">{{$order->term}} ({{$order->customer->term}})</td>
                         </tr>
 
                         <tr>
@@ -106,7 +106,7 @@
                                     <th>Total Price </th>
                                     <th>Total Cost </th>
                                     <th>Supplier</th>
-                                    <th>Term 2</th>
+                                    <th>Term</th>
                                     <th>Lead Time (Week)</th>
                                     <th>Total Margin</th>
                                     <th>%</th>
@@ -132,7 +132,7 @@
                                 <td>{{$data->displayCost}}</td>
                                 <td>{{$data->displayTotalPrice}}</td>
                                 <td>{{$data->displayTotalCost}}</td>
-                                <td>{{$data->supplier}}</td>
+                                <td>{{$data->supplierModel->name ?? ''}}</td>
                                 <td>{{$data->term_2}}</td>
                                 <td>{{$data->leadtime}}</td>
                                 <td>{{$data->margin}}</td>
@@ -270,7 +270,7 @@
                                     <option value="" id="defaultSupplier"></option>
                                     <option value="">-----------------------------</option>
                                     @foreach($supplier as $key=>$data)
-                                        <option value="{{$data->supplier}}">{{$data->supplier}}</option>
+                                        <option value="{{$data->id}}">{{$data->supplier}}</option>
                                         
 
                                     @endforeach
@@ -278,7 +278,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <div class="col-4"><label for="term_2">Term 2</label></div>
+                                <div class="col-4"><label for="term_2">Term</label></div>
                                 
                                 <!-- <input type="text" name="term_2" id= "term_2"class="form-control" style="width:300px;" align="left" required="required"/> -->
                                 <select name="term_2" id="term_2" class="form-control" style="width:300px">

@@ -39,7 +39,8 @@ class PurchaseRequestController extends Controller
             $user_name = session()->get('name');
             $sales_person = User::whereNotIn('name',[$user_name])->get('name');
              $name = Customer::get('name')->toArray();
-            $supplier = Supplier::select('supplier')->get();
+             $customers = Customer::get();
+            $supplier = Supplier::select('supplier', 'id')->get();
 
             $currency = Currency::select('name', 'code')->get();
 
@@ -47,7 +48,8 @@ class PurchaseRequestController extends Controller
                 'name'         => $name,
                 'sales_person' => $sales_person,
                 'supplier'     => $supplier,
-                'currency'     => $currency
+                'currency'     => $currency,
+                'customers' => $customers,
             );
             //  return view('form',['name'=>$name],['sales_person'=>$sales_person],['supplier'=>$supplier]);
             return view('form',$info);
@@ -185,7 +187,9 @@ class PurchaseRequestController extends Controller
 
     public function addOrder(Request $request){
         $data = $request->all();
+        $data['cust_name'] = Customer::find($request->customer_id)->name;
         $order = Orders::create($data);
+        $suppliers = Supplier::whereIn('id', $request->supplier)->get()->keyBy('id');
         $id = $order->id;
         if(count($request->item_des)>0){
             foreach($request->item_des as $item=>$v){
@@ -201,7 +205,8 @@ class PurchaseRequestController extends Controller
                         'currency_cost'=>$request->currency_cost[$item],
                         'total_price'    =>$request->total_price[$item],
                         'total_cost'    =>$request->total_cost[$item],
-                        'supplier'       =>$request->supplier[$item],
+                        'supplier'       =>$suppliers[$request->supplier[$item]]->name,
+                        'supplier_id'       =>$request->supplier[$item],
                         'term_2'         =>$request->term_2[$item],
                         'leadtime'       =>$request->leadtime[$item],
                         'margin'       =>$request->margin[$item],

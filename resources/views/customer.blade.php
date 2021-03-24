@@ -29,6 +29,7 @@
                 <thead>
                     <tr>
                         <th width="20%">Name</th>
+                        <th width="20%">Term</th>
                         <th width="20%">Action</th>
                     </tr>
                 </thead>
@@ -64,6 +65,13 @@
                      
                         <input type="text" name="custname" id="custname" class="form-control" style="width:300px;" align="left" required="required"/>
                     </div>
+                    <div class="form-group row">
+                        <div class="col-sm-4">
+                               <label for="custname"><h6>Term</h6> </label>
+                        </div>
+                     
+                        <input type="text" name="term" id="term" class="form-control" style="width:300px;" align="left" required="required"/>
+                    </div>
                    
                 </div>
                 <div class="modal-footer">
@@ -97,6 +105,7 @@ $(document).ready(function(){
         "ajax"       :"{{route('customer.getData')}}",
         "columns":[
             {"data":"name"},
+            {"data":"term"},
             {"data":"action",orderable:false,searchable:false}
         ]
     });

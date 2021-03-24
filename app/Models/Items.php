@@ -30,6 +30,10 @@ class Items extends Model
     public function order(){
         return $this->belongsTo(Orders::class);
     }
+    
+    public function supplierModel(){
+        return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
 
     public function getConvertedTotalPriceAttribute() {
         return currency($this->total_price, $this->currency_price, null, false);

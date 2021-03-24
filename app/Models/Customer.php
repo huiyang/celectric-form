@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     protected $table = "customers";
-    protected $fillable =['id','name','added_by'];
+    protected $fillable =['id','name','term','added_by'];
 
 }
